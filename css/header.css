@@ -1,0 +1,39 @@
+/* HEADER */
+header {
+    height: 20%;
+    background-color: var(--prussian);
+}
+
+header > div {
+    display: inline-block;
+}
+
+#logo {
+    height: 100%;
+    width: 20%;
+    min-width: 10rem;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+#logo img {
+    height: 50%;
+    width: auto;
+}
+
+#slogan {
+    width: 80%;
+    min-width: 20rem;
+    height: 100%;
+    float: right;
+    font-size: 3rem;
+    line-height: 3rem;
+    padding-left: 2rem;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}

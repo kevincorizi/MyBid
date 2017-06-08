@@ -1,16 +1,22 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <title>PoliBid</title>
+    <meta charset="UTF-8">
+    <meta name="description" content="The most advanced bidding platform yet">
+    <meta name="keywords" content="bid,bids,bidder,offer,product,auction,money">
+    <meta name="author" content="Kevin Corizi">
     <link rel="stylesheet" href="./css/style.css"/>
+    <script src="./js/jquery-3.2.1.min.js"></script>
+    <script src="./js/controls.js"></script>
 </head>
 <body>
     <header>
         <div id="logo">
-            <img src="x">
-            MyBid
+            <img src="./assets/bid_logo.png">
         </div>
         <div id="slogan">
-            <p>the best bidding platform ever</p>
+            <p>PoliBid</p>
         </div>
     </header>
     <main>

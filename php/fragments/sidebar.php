@@ -1,6 +1,3 @@
-<?php
-
-?>
 <aside>
     <ul id="app_actions">
         <?php if(is_logged()): ?>

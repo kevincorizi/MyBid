@@ -1,15 +1,11 @@
 <?php
     require_once DIR_PHP_FUNCTIONS.'db_manager.php';
     require_once DIR_PHP_OBJECTS.'user.php';
+
     /* Common utility functions */
     /* Redirection with cache emptying */
     function redirect($url){
         header('Location:'.$url, true, 303);
-    }
-
-    /* $_SESSION global variable initializer */
-    function session_fields($resultSet){
-        $_SESSION['username'] = $resultSet[0]->username;
     }
 
     /*
@@ -51,7 +47,7 @@
         }
     }
 
-
+    /* DEBUG */
     function console_log( $data ){
         echo '<script>';
         echo 'console.log('. json_encode( $data ) .')';

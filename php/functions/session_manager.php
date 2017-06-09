@@ -6,6 +6,11 @@
         }
     }
 
+    /* $_SESSION global variable initializer */
+    function session_fields($resultSet){
+        $_SESSION['username'] = $resultSet[0]->username;
+    }
+
     function is_logged(){
         return (isset($_SESSION['username']));
     }

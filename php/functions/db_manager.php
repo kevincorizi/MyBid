@@ -1,7 +1,5 @@
 <?php
     /* Utility functions for database management */
-    require_once "config.php";
-
     $conn = new DatabaseInterface();
 
     class DatabaseInterface{

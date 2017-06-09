@@ -1,4 +1,6 @@
 <?php
+    require_once DIR_PHP_FUNCTIONS.'db_manager.php';
+    require_once DIR_PHP_OBJECTS.'user.php';
     /* Common utility functions */
     /* Redirection with cache emptying */
     function redirect($url){
@@ -39,7 +41,8 @@
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
-                array_push($result_set, new User($row['username'], $row['password']));
+                $u = new User($row['email'], $row['password']);
+                array_push($result_set, $u);
             }
             return $result_set;
         }

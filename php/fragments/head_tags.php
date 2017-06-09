@@ -6,6 +6,7 @@
 <link rel="stylesheet" href="./css/header.css"/>
 <link rel="stylesheet" href="./css/sidebar.css"/>
 <link rel="stylesheet" href="./css/controls.css"/>
+<link rel="stylesheet" href="./css/banners.css"/>
 <link rel="stylesheet" href="./css/auth.css"/>
 <script src="./js/jquery-3.2.1.min.js"></script>
 <script src="./js/controls.js"></script>

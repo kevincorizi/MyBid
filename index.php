@@ -3,6 +3,8 @@
     require_once DIR_PHP_FUNCTIONS.'session_manager.php';
     require_once DIR_PHP_FUNCTIONS.'db_manager.php';
     require_once DIR_PHP_FUNCTIONS.'lib.php';
+
+    start_session();
 ?>
 
 <!DOCTYPE html>

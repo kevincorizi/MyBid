@@ -6,6 +6,7 @@
     define('DIR_PHP',DIR_BASE.'php/');
     define('DIR_PHP_FRAGMENTS',DIR_PHP.'fragments/');
     define('DIR_PHP_FUNCTIONS',DIR_PHP.'functions/');
+    define('DIR_PHP_OBJECTS',DIR_PHP.'objects/');
 
     define('DATABASE_NAME','polibid');
     define('DATABASE_PASSWORD','');

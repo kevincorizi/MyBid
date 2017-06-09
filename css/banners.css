@@ -1,0 +1,56 @@
+/* MESSAGES AND ERROR MESSAGES */
+.message_container{
+    position: relative;
+    margin: auto;
+    overflow: hidden;
+    height: auto;
+    position: relative;
+    padding: 10px;
+    border-radius: 2px;
+    clear: both;
+}
+
+.error_message_container{
+    background-color: rgba(255, 0, 0, 0.7);
+    border: 1px solid red;
+    padding: 10px;
+}
+
+.confirm_message_container{
+    background-color: #1499D3;
+    border: 1px solid #1761E8;
+    color: white;
+    text-align: center;
+}
+
+/* CONTENT OF THE MESSAGE */
+.message_header{
+    display: block;
+    font-size: 18px;
+    text-align: center;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+}
+
+.message_text{
+    display: block;
+    font-size: 14px;
+    text-align: center;
+}
+
+.message_close{
+    background: none;
+    border: none;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+
+.message_close > img{
+    height: 20px;
+    width: 20px;
+}
+
+.message_close:hover{
+    cursor: pointer;
+}

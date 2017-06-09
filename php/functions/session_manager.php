@@ -7,7 +7,7 @@
     }
 
     function is_logged(){
-        return (isset($_SESSION['id']));
+        return (isset($_SESSION['username']));
     }
 
     function logout(){

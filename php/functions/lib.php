@@ -1,6 +1,8 @@
 <?php
     require_once DIR_PHP_FUNCTIONS.'db_manager.php';
     require_once DIR_PHP_OBJECTS.'user.php';
+    require_once DIR_PHP_OBJECTS.'auction.php';
+    require_once DIR_PHP_OBJECTS.'offer.php';
 
     /* Common utility functions */
     /* Redirection with cache emptying */
@@ -43,7 +45,41 @@
             return $result_set;
         }
         else{
-            return $result;
+            return array();
+        }
+    }
+
+    /* Returns auctions from the product table */
+    function get_auctions($query){
+        global $conn;
+        $result = $conn->query($query);
+        if($result instanceof mysqli_result){
+            $result_set = array();
+            while ($row = $result->fetch_assoc()) {
+                $a = new Auction($row['id'], $row['name'], $row['bid'], $row['bidder']);
+                array_push($result_set, $a);
+            }
+            return $result_set;
+        }
+        else{
+            return array();
+        }
+    }
+
+    /* Return offers from the offer table */
+    function get_offers($query){
+        global $conn;
+        $result = $conn->query($query);
+        if($result instanceof mysqli_result){
+            $result_set = array();
+            while ($row = $result->fetch_assoc()) {
+                $a = new Offer($row['user'], $row['auction'], $row['value'], $row['timestamp']);
+                array_push($result_set, $a);
+            }
+            return $result_set;
+        }
+        else{
+            return array();
         }
     }
 

@@ -3,7 +3,6 @@ aside {
     position: relative;
     width: 20%;
     height: 100%;
-    min-width: 10rem;
     display: inline-block;
     float: left;
     background-color: var(--ivory);

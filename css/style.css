@@ -41,7 +41,6 @@ main {
 section {
     position: relative;
     width: 80%;
-    min-width: 20rem;
     display: inline-block;
     float: right;
     text-align: center;

@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     /* Check if the selected username is already registered */
     $('input[name=username_register]').focusout( function(){
         var username = $('input[name=username_register]').val();

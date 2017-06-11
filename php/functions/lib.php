@@ -1,8 +1,9 @@
 <?php
     require_once DIR_PHP_FUNCTIONS.'db_manager.php';
-    require_once DIR_PHP_OBJECTS.'user.php';
     require_once DIR_PHP_OBJECTS.'auction.php';
+    require_once DIR_PHP_OBJECTS.'notification.php';
     require_once DIR_PHP_OBJECTS.'offer.php';
+    require_once DIR_PHP_OBJECTS.'user.php';
 
     /* Common utility functions */
     /* Redirection with cache emptying */
@@ -32,23 +33,6 @@
             return $day.' '.$monthL.' '.$year.' '.$time;
     }
 
-    /* Returns users from User table */
-    function get_users($query){
-        global $conn;
-        $result = $conn->query($query);
-        if($result instanceof mysqli_result){
-            $result_set = array();
-            while ($row = $result->fetch_assoc()) {
-                $u = new User($row['email'], $row['password']);
-                array_push($result_set, $u);
-            }
-            return $result_set;
-        }
-        else{
-            return array();
-        }
-    }
-
     /* Returns auctions from the product table */
     function get_auctions($query){
         global $conn;
@@ -66,6 +50,23 @@
         }
     }
 
+    /* Return notifications from the notification table */
+    function get_notifications($query){
+        global $conn;
+        $result = $conn->query($query);
+        if($result instanceof mysqli_result){
+            $result_set = array();
+            while ($row = $result->fetch_assoc()) {
+                $n = new Notification($row['user'], $row['auction'], $row['type'], $row['message']);
+                array_push($result_set, $n);
+            }
+            return $result_set;
+        }
+        else{
+            return array();
+        }
+    }
+
     /* Return offers from the offer table */
     function get_offers($query){
         global $conn;
@@ -73,8 +74,25 @@
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
-                $a = new Offer($row['user'], $row['auction'], $row['value'], $row['timestamp']);
-                array_push($result_set, $a);
+                $o = new Offer($row['user'], $row['auction'], $row['value'], $row['timestamp']);
+                array_push($result_set, $o);
+            }
+            return $result_set;
+        }
+        else{
+            return array();
+        }
+    }
+
+    /* Returns users from User table */
+    function get_users($query){
+        global $conn;
+        $result = $conn->query($query);
+        if($result instanceof mysqli_result){
+            $result_set = array();
+            while ($row = $result->fetch_assoc()) {
+                $u = new User($row['email'], $row['password']);
+                array_push($result_set, $u);
             }
             return $result_set;
         }

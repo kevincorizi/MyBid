@@ -44,7 +44,7 @@
     } else {
         $update_query .= "UPDATE offer SET value=".$thri." WHERE user='".$username."' AND auction=".$auction;
     }
-    console_log($update_query);
+    //console_log($update_query);
     $result = $conn->query($update_query);
 
     // After having changed the THR_i, check if the user's bid is maximum or exceeded

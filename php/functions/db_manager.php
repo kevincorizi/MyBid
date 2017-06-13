@@ -16,7 +16,7 @@
         function query($query){
 			$result = $this->dbConnector->query($query);
             if(!$result) {
-				printf("Error: %s\n", $mysqli->sqlstate);
+				printf("Error: %s\n", $this->dbConnector->sqlstate);
 			}
             return $result;
         }

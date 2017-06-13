@@ -6,8 +6,14 @@
     global $conn;
     // Get the username
     $username = $conn->secure($_POST['username']);
+    // Username must be an email
+    if(!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+        // Notify error
+        echo -1;
+        exit();
+    }
     // mysql query to select field username if it's equal to the username that we check
-    $result = get_users('SELECT * FROM users WHERE email = "'. $username .'"');
+    $result = get_users("SELECT * FROM users WHERE email='$username';");
     //if number of rows fields is bigger them 0 that means it's NOT available '
     if(count($result)>0){
         //and we send 0 to the ajax request

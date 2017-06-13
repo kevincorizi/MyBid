@@ -23,11 +23,24 @@
     // Get the new THR_i value
     $thri = $conn->secure($_POST['thri']);
 
+    // username must be an email
+    $valid = filter_var($username, FILTER_VALIDATE_EMAIL);
+    // auction_id must be a number greater than 0 (by definition in SQL)
+    $valid = $valid && !intval($auction);
+    // thri must be a decimal number
+    $valid = $valid && !floatval($thri);
+
+    if(!$valid) {
+        $response = array("status" => "error", "value"=>"param_mismatch", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        echo json_encode($response);
+        exit();
+    }
+
 	$conn->start_transaction();
     $target_auction = get_auctions("SELECT * FROM auction WHERE id=".$auction);
     if(count($target_auction) != 1) {
         // Auction ID was tampered during the execution of the script (maybe via javascript)?
-		$response = array("status" => "invalid_auction", "value"=>$target_auction, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+		$response = array("status" => "error", "value"=>"invalid_auction", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
 		$conn->end_transaction();
         exit();
@@ -42,21 +55,21 @@
     }
 
     // Offer can be accepted, modify the THR_i for current user
-    $offers = get_offers("SELECT * FROM offer WHERE user='".$username."'");
+    $offers = get_offers("SELECT * FROM offer WHERE user='$username'");
     $update_query = '';
     if(count($offers) == 0) {
-        $update_query .= "INSERT INTO offer (user, auction, value) VALUES ('".$username."', ".$auction.", ".$thri.");";
+        $update_query .= "INSERT INTO offer (user, auction, value) VALUES ('$username', $auction, $thri);";
     } else {
-        $update_query .= "UPDATE offer SET value=".$thri." WHERE user='".$username."' AND auction=".$auction;
+        $update_query .= "UPDATE offer SET value=$thri WHERE user='$username' AND auction=$auction;";
     }
     //console_log($update_query);
     $result = $conn->query($update_query);
 
     // After having changed the THR_i, check if the user's bid is maximum or exceeded
-    $offers = get_offers("SELECT * FROM offer WHERE auction=".$auction." ORDER BY value DESC, timestamp ASC");
+    $offers = get_offers("SELECT * FROM offer WHERE auction=$auction ORDER BY value DESC, timestamp ASC");
     if(count($offers) == 1) {
         // If the one we just registered is the only offer for the auction we set the user as the bidder
-        $query = "UPDATE auction SET bidder='".$username."' WHERE id=".$auction;
+        $query = "UPDATE auction SET bidder='$username' WHERE id=$auction;";
         $result = $conn->query($query);
         $response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
@@ -64,14 +77,13 @@
         // There were other offers
         $new_bidder = $offers[0]->user;
         $new_bid_value = ($offers[1]->value != $offers[0]->value) ? $offers[1]->value + 0.01 : $offers[1]->value;
-        $query = "UPDATE auction SET bid=".$new_bid_value.", bidder='".$new_bidder."' WHERE id=".$auction;
+        $query = "UPDATE auction SET bid=$new_bid_value, bidder='$new_bidder' WHERE id=$auction;";
         $result = $conn->query($query);
 
         // SEND NOTIFICATIONS TO ALL USERS EXCEPT new_bidder AND THE CURRENT USER (WHICH IS IMMEDIATELY NOTIFIED)
-        $users_to_notify = get_users("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='".$username."' AND u.email!='".$new_bidder."';");
+        $users_to_notify = get_users("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='$username' AND u.email!='$new_bidder';");
         foreach ($users_to_notify as $user) {
-            $query = "INSERT INTO notifications (user, auction, type, message)
-                VALUES ('".$user->username."', ".$auction.", 0, 'bid_exceeded')";
+            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 0, 'bid_exceeded');";
             $result = $conn->query($query);
         }
 

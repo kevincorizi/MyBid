@@ -43,6 +43,7 @@ section {
     width: 80%;
     display: inline-block;
     float: right;
+    padding: 3rem;
 }
 
 #best_offer {

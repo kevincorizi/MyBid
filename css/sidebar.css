@@ -15,6 +15,10 @@ ul {
     width: 100%;
 }
 
+ul a {
+  display: block;
+}
+
 #app_actions {
     top: 0;
 }
@@ -35,4 +39,15 @@ li:hover {
 
 li:active {
     background-color: var(--cerulean);
+}
+
+.menu_item img {
+  float: left;
+  margin-right: 1rem;
+  height: 24px;
+}
+
+.menu_item_text {
+  line-height: 24px;
+  font-size: 24px;
 }

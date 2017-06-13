@@ -12,4 +12,7 @@
     define('DATABASE_PASSWORD','');
     define('DATABASE_USERNAME','root');
     define('DATABASE_HOST','localhost');
+	
+	/* Set session expiration time to 2 minutes of inactivity */
+	ini_set('session.gc_maxlifetime', 120);
 ?>

@@ -6,3 +6,9 @@
         <p>PoliBid</p>
     </div>
 </header>
+<noscript>
+	<div>
+		JavaScript is needed for this website to function properly. 
+		Enable JavaScript in your browser to enjoy the full PoliBid experience.
+	</div>
+</noscript>

@@ -6,13 +6,26 @@
     padding-top: 5rem;
 }
 
+#auth_main input {
+  margin-bottom: 1rem;
+}
+
+#auth_main .message_header {
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+#login_panel, #register_panel {
+  box-shadow: 0 0 50px #aaa;
+  border-radius: 5px;
+}
+
 #login_panel{
     width: 395px;
     background-color: white;
-    border-radius: 2px;
-    box-shadow:0 1px 2px #aaa;
     padding: 20px;
     margin-left: 5rem;
+    margin-right: 1rem;
 }
 
 #login, #register{
@@ -23,8 +36,7 @@
 #register_panel{
     width: 595px;
     background-color: white;
-    border-radius: 2px;
-    box-shadow:0 1px 2px #aaa;
     padding: 20px;
     margin-right: 5rem;
+    margin-left: 1rem;
 }

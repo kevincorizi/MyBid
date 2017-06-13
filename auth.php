@@ -15,46 +15,54 @@
     }
     /* If user wants to login */
     if (isset($_POST['submit_login'])) {
-        $username = $conn->secure($_POST['username_login']);
-        $password = md5($_POST['password_login']);
-
-        $result_set = get_users("SELECT * FROM users WHERE email='".$username."'");
-        if(count($result_set) != 1){
-            $auth_error = "username";
-        }
-        else{
-            if($result_set[0]->password == $password){
-                session_fields($result_set);
-                redirect('index.php');
-            }
-            else{
-                $auth_error = "password";
-            }
-        }
+		if($_POST['username_login'] != "" && $_POST['password_login'] != "") {
+			$username = $conn->secure($_POST['username_login']);
+			$password = md5($_POST['password_login']);
+			
+			$result_set = get_users("SELECT * FROM users WHERE email='".$username."'");
+			
+			if(count($result_set) != 1){
+				$auth_error = "username";
+			}
+			else{
+				if($result_set[0]->password == $password){
+					session_fields($result_set);
+					redirect('index.php');
+				}
+				else{
+					$auth_error = "password";
+				}
+			}
+		} else {
+			$auth_error = "login_blank_fields";
+		}
     }
     /* If the user wants to sign up */
     else if(isset($_POST['submit_register'])){
-        $username = $conn->secure($_POST['username_register']);
-        $password = md5($_POST['password_register']);
+		if($_POST['username_register'] != "" && $_POST['password_register'] != "") {
+			$username = $conn->secure($_POST['username_register']);
+			$password = md5($_POST['password_register']);
 
-        $previous_user = get_users("SELECT * FROM users WHERE email='".$username."'");
-        if(count($previous_user) == 0){
-            $register_query = "INSERT INTO users (email, password) VALUES ('".$username."','".$password."')";
-            $result = $conn->query($register_query);
-
-            if($result == FALSE){
-                $auth_error = "register";
-            }
-            else{
-                $login_query = "SELECT * FROM users WHERE email='".$username."'";
-                $result_login = get_users($login_query);
-                session_fields($result_login);
-                redirect('index.php');
-            }
-        }
-        else{
-            $auth_error = "duplicate";
-        }
+			$previous_user = get_users("SELECT * FROM users WHERE email='".$username."'");
+			if(count($previous_user) == 0){
+				$register_query = "INSERT INTO users (email, password) VALUES ('".$username."','".$password."')";
+				$result = $conn->query($register_query);			
+				if($result == FALSE){
+					$auth_error = "register";
+				}
+				else{
+					$login_query = "SELECT * FROM users WHERE email='".$username."'";
+					$result_login = get_users($login_query);
+					session_fields($result_login);
+					redirect('index.php');
+				}
+			}
+			else{
+				$auth_error = "duplicate";
+			}
+		} else {
+			$auth_error = "register_blank_fields";
+		}
     }
 ?>
 
@@ -83,7 +91,7 @@
             <?php endif; ?>
             <p class='message_header'>Login</p>
             <form id='login' action='auth.php' method='POST'>
-                <input class='large_field' type='text' name='username_login' class='login_input' required placeholder='Username'>
+                <input class='large_field' type='email' name='username_login' class='login_input' required placeholder='Username'>
                 <input class='large_field' type='password' name='password_login' class='login_input' required placeholder='Password'>
                 <button type='submit' name='submit_login' class='button large_button'>Login</button>
             </form>

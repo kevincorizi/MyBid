@@ -7,8 +7,8 @@
     }
 
     /* $_SESSION global variable initializer */
-    function session_fields($resultSet){
-        $_SESSION['username'] = $resultSet[0]->username;
+    function session_fields($result_set){
+        $_SESSION['username'] = $result_set[0]->username;
     }
 
     function is_logged(){
@@ -16,9 +16,13 @@
     }
 
     function logout(){
-        if (isset($_SESSION)) {
-            session_destroy();
-            header('Location: ../../index.php');
-        }
+		$_SESSION = array();
+		if (session_id() != "" || isset($_COOKIE[session_name()]))
+			setcookie(session_name(), '', time()-2592000, '/');		
+		session_destroy();
     }
+	
+	function check_timeout() {
+		
+	}
 ?>

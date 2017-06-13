@@ -12,11 +12,11 @@
         <p>It looks like you don't have any bid placed yet :(</p>
         <p>Do you want to add a new bid now?</p>
         <?php else: ?>
-        <p>Your current bid for the auction <?php echo $auction->name; ?> is <?php echo $offer->value; ?>.</p>
-        <p>You placed this bid on <?php echo toDate($offer->timestamp, 'long'); ?>.</p>
+        <p>Your current bid for the auction <?php echo $auction->name; ?> is <span id="current_thri_value"><?php echo $offer->value; ?></span>€.</p>
+        <p>You placed this bid on <span id="current_thri_date"><?php echo toDate($offer->timestamp, 'long'); ?></span>.</p>
         <p>Do you want to update it?</p>
         <?php endif; ?>
-        <button id="show_thri_popup" onclick="show_thri_popup()">Click here!</button>
+        <button id="show_thri_popup">Click here!</button>
     </article>
     <article>
     <?php if(count($notifications) == 1): ?>
@@ -37,13 +37,18 @@
 <div class="overlay">
     <div id="new_thri_form" title="New bid">
         <p class="validate_tips">Please enter your new bid.</p>
-        <button onclick="close_thri_popup()">X</button>
-        <form>
+        <form name="auction_<?php echo $auction->id; ?>">
             <fieldset>
                 <label for="thri_value">Value</label>
                 <input type="number" name="thri_value" id="thri_value" value="<?php echo $auction->bid + 0.01 ?>" step="0.01">
-                <button type="button" onclick="update_new_thri(<?php echo $auction->id; ?>)">Confirm</button>
-                <button type="button" onclick="cancel_new_thri()">Cancel</button>
+				
+				<div class="message_container confirm_message_container">
+					<p class="message_header">sdfbg</p>
+					<p class="message_text">wer</p>
+				</div>
+				
+                <button id="update_thri_button" type="button">Confirm</button>
+                <button id="cancel_thri_button" type="button">Close</button>
             </fieldset>
         </form>
     </div>

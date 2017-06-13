@@ -23,16 +23,21 @@
     // Get the new THR_i value
     $thri = $conn->secure($_POST['thri']);
 
+	$conn->start_transaction();
     $target_auction = get_auctions("SELECT * FROM auction WHERE id=".$auction);
     if(count($target_auction) != 1) {
         // Auction ID was tampered during the execution of the script (maybe via javascript)?
-        echo 'invalid_auction';
+		$response = array("status" => "invalid_auction", "value"=>$target_auction, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        echo json_encode($response);
+		$conn->end_transaction();
         exit();
     }
 
     if($target_auction[0]->bid > $thri) {
         // Offer cannot be placed because it is smaller than current BID
-        echo 'smaller_than_bid';
+        $response = array("status" => "smaller_than_bid", "value"=>$target_auction[0]->bid, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        echo json_encode($response);
+		$conn->end_transaction();
         exit();
     }
 
@@ -53,8 +58,8 @@
         // If the one we just registered is the only offer for the auction we set the user as the bidder
         $query = "UPDATE auction SET bidder='".$username."' WHERE id=".$auction;
         $result = $conn->query($query);
-        echo 'highest_bidder';
-        exit();
+        $response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        echo json_encode($response);
     } else {
         // There were other offers
         $new_bidder = $offers[0]->user;
@@ -71,9 +76,12 @@
         }
 
         if($new_bidder == $username) {
-            echo 'highest_bidder';
+			$response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+			echo json_encode($response);
         } else {
-            echo 'bid_exceeded';
+            $response = array("status" => "bid_exceeded", "value"=>$thri, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+			echo json_encode($response);
         }
     }
+	$conn->end_transaction();
 ?>

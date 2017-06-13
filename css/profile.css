@@ -1,0 +1,17 @@
+h1 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+}
+
+article p {
+    font-size: 1.5rem;
+    margin-bottom: 10px;
+}
+
+#show_thri_popup {
+    width: auto;
+    height: auto;
+    font-size: 2rem;
+    padding: 20px 40px;
+    margin-bottom: 20px;
+}

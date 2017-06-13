@@ -119,5 +119,6 @@
             </form>
         </div>
     </main>
+    <?php require_once('./php/fragments/footer.php'); ?>
 </body>
 </html>

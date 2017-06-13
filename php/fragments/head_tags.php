@@ -8,6 +8,8 @@
 <link rel="stylesheet" href="./css/controls.css"/>
 <link rel="stylesheet" href="./css/banners.css"/>
 <link rel="stylesheet" href="./css/auth.css"/>
+<link rel="stylesheet" href="./css/footer.css"/>
+<link rel="stylesheet" href="./css/profile.css"/>
 <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 <script src="./js/controls.js"></script>
 <script src="./js/popups.js"></script>

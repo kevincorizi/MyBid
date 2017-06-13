@@ -58,6 +58,7 @@
     margin-bottom: 5px;
     color: white;
     border-bottom: 2px solid #1761E8;
+    display: inline-block;
 }
 
 .large_button:hover{

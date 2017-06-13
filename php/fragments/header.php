@@ -1,4 +1,7 @@
 <header>
+    <div id="sidebar_toggle">
+        <img src="/assets/icons/menu.png">
+    </div>
     <div id="logo" onclick="location.href='index.php'">
         <img src="./assets/bid_logo.png">
     </div>

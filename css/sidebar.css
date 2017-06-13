@@ -2,9 +2,9 @@
 aside {
     position: relative;
     width: 20%;
+    min-width: 300px;
     height: 100%;
     display: inline-block;
-    float: left;
     background-color: var(--ivory);
     color: white;
 }

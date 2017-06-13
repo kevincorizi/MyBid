@@ -23,12 +23,21 @@
     // Get the new THR_i value
     $thri = $conn->secure($_POST['thri']);
 
+    $valid = true;
+
     // username must be an email
-    $valid = filter_var($username, FILTER_VALIDATE_EMAIL);
+    if(filter_var($username, FILTER_VALIDATE_EMAIL) == false)
+        $valid = false;
+
     // auction_id must be a number greater than 0 (by definition in SQL)
-    $valid = $valid && !intval($auction);
+    $auction = intval($auction);
+    if($auction == false)
+        $valid = false;
+
     // thri must be a decimal number
-    $valid = $valid && !floatval($thri);
+    $thri = floatval($thri);
+    if($thri == false)
+        $valid = false;;
 
     if(!$valid) {
         $response = array("status" => "error", "value"=>"param_mismatch", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
@@ -36,8 +45,12 @@
         exit();
     }
 
-	$conn->start_transaction();
-    $target_auction = get_auctions("SELECT * FROM auction WHERE id=".$auction);
+	if(!$conn->start_transaction()) {
+        $response = array("status" => "error", "value"=>"database_transaction_error", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        echo json_encode($response);
+        exit();
+    }
+    $target_auction = get_auctions("SELECT * FROM auction WHERE id=$auction;");
     if(count($target_auction) != 1) {
         // Auction ID was tampered during the execution of the script (maybe via javascript)?
 		$response = array("status" => "error", "value"=>"invalid_auction", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));

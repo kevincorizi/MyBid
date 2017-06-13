@@ -22,5 +22,6 @@
         <?php require_once('./php/fragments/sidebar.php'); ?>
         <?php require_once('./php/fragments/content_profile.php'); ?>
     </main>
+    <?php require_once('./php/fragments/footer.php'); ?>
 </body>
 </html>

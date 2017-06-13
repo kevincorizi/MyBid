@@ -16,7 +16,7 @@
         <p>You placed this bid on <span id="current_thri_date"><?php echo toDate($offer->timestamp, 'long'); ?></span>.</p>
         <p>Do you want to update it?</p>
         <?php endif; ?>
-        <button id="show_thri_popup">Click here!</button>
+        <button id="show_thri_popup" class="button large_button">Click here!</button>
     </article>
     <article>
     <?php if(count($notifications) == 1): ?>
@@ -47,8 +47,8 @@
 					<p class="message_text">wer</p>
 				</div>
 				
-                <button id="update_thri_button" type="button">Confirm</button>
-                <button id="cancel_thri_button" type="button">Close</button>
+                <button id="update_thri_button" type="button" class="button large_button">Confirm</button>
+                <button id="cancel_thri_button" type="button" class="button large_button">Close</button>
             </fieldset>
         </form>
     </div>

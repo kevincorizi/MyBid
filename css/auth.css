@@ -4,39 +4,41 @@
     align-items: flex-start;
     justify-content: center;
     padding-top: 5rem;
+    background-color: #0B3C5D;
+    width: 80%;
+    margin-left: 10%;
+    margin-right: 10%;
+    min-width: 800px;
 }
 
 #auth_main input {
-  margin-bottom: 1rem;
+    margin-bottom: 1rem;
 }
 
 #auth_main .message_header {
-  font-size: 1rem;
-  margin-bottom: 1rem;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 #login_panel, #register_panel {
-  box-shadow: 0 0 50px #aaa;
-  border-radius: 5px;
-}
-
-#login_panel{
-    width: 395px;
+    box-shadow: 0 0 50px #aaa;
+    border-radius: 5px;
+    width: 50%;
     background-color: white;
     padding: 20px;
-    margin-left: 5rem;
+    min-width: 350px;
+    max-width: 500px;
+}
+
+#register_panel {
+    margin-left: 1rem;
+}
+
+#login_panel {
     margin-right: 1rem;
 }
 
-#login, #register{
+#login, #register {
     background-color: transparent;
     position: relative;
-}
-
-#register_panel{
-    width: 595px;
-    background-color: white;
-    padding: 20px;
-    margin-right: 5rem;
-    margin-left: 1rem;
 }

@@ -23,7 +23,7 @@
 		
 		function start_transaction() {
 			$this->dbConnector->autocommit(false);
-			return $this->dbConnector->begin_transaction(MYSQLI_TRANS_START_READ_WRITE);
+			return $this->dbConnector->begin_transaction();
 		}
 		
 		function end_transaction() {

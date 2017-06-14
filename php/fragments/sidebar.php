@@ -5,7 +5,7 @@
                 <a onclick="location.href='profile.php'">
                     <li>
                         <div class="menu_item">
-                            <img src="/assets/icons/account.png">
+                            <img src="./assets/icons/account.png">
                             <span class="menu_item_text">Your profile</span>
                         </div>
                     </li>
@@ -14,7 +14,7 @@
                 <a onclick="location.href='index.php'">
                     <li>
                         <div class="menu_item">
-                            <img src="/assets /icons/home.png">
+                            <img src="./assets /icons/home.png">
                             <span class="menu_item_text">Home</span>
                         </div>
                     </li>
@@ -27,7 +27,7 @@
         <a onclick="location.href='auth.php'">
             <li>
                 <div class="menu_item">
-                    <img src="/assets/icons/account.png">
+                    <img src="./assets/icons/account.png">
                     <span class="menu_item_text">Login</span>
                 </div>
             </li>
@@ -35,7 +35,7 @@
         <?php else: ?>
         <a onclick="location.href='logout.php'">
             <li><div class="menu_item">
-                    <img src="/assets/icons/exit.png">
+                    <img src="./assets/icons/exit.png">
                     <span class="menu_item_text">Logout</span>
                 </div>
             </li>

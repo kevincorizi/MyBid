@@ -49,7 +49,7 @@
 }
 
 .message_close{
-    background: url(/assets/icons/cancel.png);
+    background: url(./assets/icons/cancel.png);
     background-repeat: no-repeat;
     height: 24px;
     width: 24px;

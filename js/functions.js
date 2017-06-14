@@ -2,11 +2,11 @@ function onload_handler() {
     if (!navigator.cookieEnabled) {
         // I perform the check unless i'm already on nocookie page (to avoid loops)
         if(window.location.toString().indexOf("nocookie.php") == -1)
-            window.location = "/nocookie.php";
+            window.location = "./nocookie.php";
     } else {
         // If i am in nocookie.php and cookies are enabled, I go back to index.php
         if(window.location.toString().indexOf("nocookie.php") != -1)
-            window.location = "/index.php";
+            window.location = "./index.php";
     }
 }
 
@@ -18,7 +18,7 @@ $(document).ready(function() {
             return;
         console.log(username);
         //use ajax to run the check
-        $.post("/php/functions/check_username.php", { username: username },
+        $.post("./php/functions/check_username.php", { username: username },
             function(result){
                 //if the result is 1
                 switch(result) {
@@ -58,7 +58,7 @@ $(document).ready(function() {
             return;
 
         //use ajax to run the check
-        $.post("/php/functions/check_username.php", { username: username },
+        $.post("./php/functions/check_username.php", { username: username },
             function(result){
                 switch(result) {
                     case "0":
@@ -153,7 +153,7 @@ $(document).ready(function() {
 // Function to asynchronously perform thri update
 function update_thri_async(auction_id, new_thri, callback) {
     if (new_thri != null && auction_id != null) {
-        return $.post("/php/functions/update_thri.php",
+        return $.post("./php/functions/update_thri.php",
             {auction: auction_id, thri: new_thri },
             function(result){
                 callback(result);
@@ -165,7 +165,7 @@ function update_thri_async(auction_id, new_thri, callback) {
 // Function to asynchronously perform notification disposal
 function delete_notification_async(notification_id, callback) {
     if (!isNaN(notification_id) && callback != null) {
-        return $.post("/php/functions/dispose_notification.php",
+        return $.post("./php/functions/dispose_notification.php",
             {notification_id: notification_id},
             function(result){
                 callback(result);

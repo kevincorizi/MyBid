@@ -76,7 +76,7 @@
     <title>PoliBid - Login</title>
     <?php require_once('./php/fragments/head_tags.php'); ?>
 </head>
-<body>
+<body onload="onload_handler()">
     <?php require_once('./php/fragments/header.php'); ?>
     <main id="auth_main">
         <div id='login_panel'>

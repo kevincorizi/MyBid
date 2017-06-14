@@ -14,6 +14,9 @@
 
     start_session();
 
+    if(!is_logged()) {
+        redirect("../../auth.php");
+    }
     global $conn;
 
     // Get the username

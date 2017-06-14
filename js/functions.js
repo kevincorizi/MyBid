@@ -10,7 +10,7 @@ function onload_handler() {
     }
 
     // Adapt the height of the sidebar to the actual height of the content
-    $('aside').css("height", $('main').attr("height"));
+    $('aside').css("height", $('main').attr("height") + " !important");
 }
 
 $(document).ready(function() {

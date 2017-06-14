@@ -20,7 +20,15 @@
     background-color: #1499D3;
     border: 1px solid #1761E8;
     color: white;
-    text-align: center;
+}
+
+.notification_message_container{
+    background-color: orange;
+    color: black;
+    margin-bottom: 20px;
+    float: left;
+    min-width: 300px;
+    text-align: left;
 }
 
 /* CONTENT OF THE MESSAGE */
@@ -39,7 +47,10 @@
 }
 
 .message_close{
-    background: none;
+    background: url(/assets/icons/cancel.png);
+    background-repeat: no-repeat;
+    height: 24px;
+    width: 24px;
     border: none;
     position: absolute;
     top: 5px;

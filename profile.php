@@ -32,11 +32,10 @@
         <h1>Hello, <?php echo $username; ?>!</h1>
         <article>
             <?php if (is_null($offer)): // The user did not place a bid yet ?>
-                <p>It looks like you don't have any bid placed yet :(</p>
+                <p id="current_thri_value">It looks like you don't have any bid placed yet :(</p>
                 <p>Do you want to add a new bid now?</p>
             <?php else: ?>
-                <p>Your current bid for the auction <?php echo $auction->name; ?> is <span
-                            id="current_thri_value"><?php echo $offer->value; ?></span>€.</p>
+                <p id="current_thri_value">Your current bid for the auction <?php echo $auction->name; ?> is <?php echo $offer->value; ?>€.</p>
                 <p>You placed this bid on <span
                             id="current_thri_date"><?php echo toDate($offer->timestamp, 'long'); ?></span>.</p>
                 <p>Do you want to update it?</p>
@@ -45,14 +44,14 @@
         </article>
         <article>
             <?php if (count($notifications) == 1): ?>
-                <h2>You have 1 notification</h2>
+                <h2>You have <span id="notification_count">1</span> notification</h2>
             <?php else: ?>
-                <h2>You have <?php echo count($notifications); ?> notifications</h2>
+                <h2>You have <span id="notification_count"><?php echo count($notifications); ?></span> notifications</h2>
             <?php endif; ?>
             <?php foreach ($notifications as $notification): ?>
-                <div class="message_container error_message_container">
-                    <p class="message_header"><?php $notification->type ?></p>
-                    <p class="message_text"><?php $notification->message ?></p>
+                <div id="notification_<?php echo $notification->id; ?>" class="message_container notification_message_container">
+                    <p class="message_header"><?php echo $notification->type ?></p>
+                    <p class="message_text"><?php echo $notification->message ?></p>
                     <button type="button" class="button message_close"></button>
                 </div>
             <?php endforeach; ?>
@@ -65,14 +64,8 @@
             <form name="auction_<?php echo $auction->id; ?>">
                 <fieldset>
                     <label for="thri_value">Value</label>
-                    <input type="number" name="thri_value" id="thri_value" value="<?php echo $auction->bid + 0.01 ?>"
-                           step="0.01">
-
-                    <div class="message_container confirm_message_container">
-                        <p class="message_header">sdfbg</p>
-                        <p class="message_text">wer</p>
-                    </div>
-
+                    <input type="number" name="thri_value" id="thri_value" value="<?php echo $auction->bid + 0.01 ?>" step="0.01"
+                           onchange="if( this.value.length == 1 ) this.value=this.value + '.00'; if(this.value.split('.')[1].length == 1) this.value = this.value + '0';">
                     <button id="update_thri_button" type="button" class="button large_button">Confirm</button>
                     <button id="cancel_thri_button" type="button" class="button large_button">Close</button>
                 </fieldset>

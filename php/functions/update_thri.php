@@ -44,20 +44,20 @@
         $valid = false;;
 
     if(!$valid) {
-        $response = array("status" => "error", "value"=>"param_mismatch", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        $response = array("status" => "thri_error", "value"=>"Invalid parameters in bid update", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
         exit();
     }
 
 	if(!$conn->start_transaction()) {
-        $response = array("status" => "error", "value"=>"database_transaction_error", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        $response = array("status" => "thri_error", "value"=>"Server error in bid update", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
         exit();
     }
     $target_auction = get_auctions($conn->query("SELECT * FROM auction WHERE id=$auction;"));
     if(count($target_auction) != 1) {
         // Auction ID was tampered during the execution of the script (maybe via javascript)?
-		$response = array("status" => "error", "value"=>"invalid_auction", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+		$response = array("status" => "thri_error", "value"=>"Invalid auction ID in bid update", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
 		$conn->end_transaction();
         exit();
@@ -65,7 +65,7 @@
 
     if($target_auction[0]->bid > $thri) {
         // Offer cannot be placed because it is smaller than current BID
-        $response = array("status" => "smaller_than_bid", "value"=>$target_auction[0]->bid, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        $response = array("status" => "smaller_than_bid", "value"=>"Your bid is smaller than current winning bid (".$target_auction[0]->bid." €)", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
 		$conn->end_transaction();
         exit();
@@ -88,7 +88,7 @@
         // If the one we just registered is the only offer for the auction we set the user as the bidder
         $query = "UPDATE auction SET bidder='$username' WHERE id=$auction;";
         $result = $conn->query($query);
-        $response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+        $response = array("status" => "highest_bidder", "value"=>"Congrats! Now you are the highest bidder! Your bid is ".$offers[0]->value." €", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
         echo json_encode($response);
     } else {
         // There were other offers
@@ -100,15 +100,15 @@
         // SEND NOTIFICATIONS TO ALL USERS EXCEPT new_bidder AND THE CURRENT USER (WHICH IS IMMEDIATELY NOTIFIED)
         $users_to_notify = get_users($conn->query("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='$username' AND u.email!='$new_bidder';"));
         foreach ($users_to_notify as $user) {
-            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 'bid_exceeded', '$new_bidder');";
+            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 'Bid exceeded', '$new_bidder\'s bid exceeded your for auction $auction');";
             $result = $conn->query($query);
         }
 
         if($new_bidder == $username) {
-			$response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+			$response = array("status" => "highest_bidder", "value"=>"Congrats! Now you are the highest bidder! Your bid is ".$offers[0]->value." €", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         } else {
-            $response = array("status" => "bid_exceeded", "value"=>$new_bidder, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+            $response = array("status" => "bid_exceeded", "value"=>"Your new bid is ".$offers[0]->value." €, but it was exceeded by $new_bidder's :(", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         }
     }

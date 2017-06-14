@@ -53,7 +53,7 @@
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
-                $n = new Notification($row['user'], $row['auction'], $row['type'], $row['message']);
+                $n = new Notification($row['id'], $row['user'], $row['auction'], $row['type'], $row['message']);
                 array_push($result_set, $n);
             }
             return $result_set;

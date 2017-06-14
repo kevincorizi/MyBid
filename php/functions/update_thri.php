@@ -108,7 +108,7 @@
 			$response = array("status" => "highest_bidder", "value"=>"Congrats! Now you are the highest bidder! Your bid is ".$offers[0]->value." €", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         } else {
-            $response = array("status" => "bid_exceeded", "value"=>"Your new bid is ".$offers[0]->value." €, but it was exceeded by $new_bidder's :(", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+            $response = array("status" => "bid_exceeded", "value"=>"Your new bid is $thri €, but it was exceeded by $new_bidder's :(", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         }
     }

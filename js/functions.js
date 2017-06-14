@@ -1,3 +1,15 @@
+function onload_handler() {
+    if (!navigator.cookieEnabled) {
+        // I perform the check unless i'm already on nocookie page (to avoid loops)
+        if(window.location.toString().indexOf("nocookie.php") == -1)
+            window.location = "/nocookie.php";
+    } else {
+        // If i am in nocookie.php and cookies are enabled, I go back to index.php
+        if(window.location.toString().indexOf("nocookie.php") != -1)
+            window.location = "/index.php";
+    }
+}
+
 $(document).ready(function() {
     // Check if the selected username is already registered
     $('input[name=username_register]').focusout( function(){
@@ -99,13 +111,13 @@ $(document).ready(function() {
 
     // Register event handler for thri update action
     $('button#update_thri_button').click(function() {
-        var new_thri = $("#thri_value").val();
+        var new_thri = Number($("#thri_value").val());
         var auction_id = $("#new_thri_form form")[0].name.split("_")[1];
         if(isNaN(auction_id)) {
             display_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
             return;
         }
-        if(new_thri.match(/^(\d+[\.|\,])?\d+$/)) {
+        if(!isNaN(new_thri)) {
             update_thri_async(auction_id, new_thri, display_result);
         } else {
             display_result("{\"status\": \"thri_error\", \"value\": \"Invalid bid value\"}");

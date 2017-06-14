@@ -34,11 +34,11 @@ li {
 }
 
 li:hover {
-    background-color: var(--sky);
+    background-color: #328CC1;
 }
 
 li:active {
-    background-color: var(--cerulean);
+    background-color: #4484CE;
 }
 
 .menu_item img {

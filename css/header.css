@@ -12,20 +12,6 @@ header > div {
     display: inline-block;
 }
 
-#sidebar_toggle {
-    position: absolute;
-    left: 5%;
-    top: 5%;
-    visibility: hidden;
-    cursor: pointer;
-}
-
-@media (max-width: 768px) {
-    #sidebar_toggle {
-        visibility: visible;
-    }
-}
-
 #logo {
     height: 100%;
     display: flex;

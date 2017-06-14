@@ -6,22 +6,6 @@
     font-family: "Market Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
-/*
-These variables are not understood by all browsers,
-i keep them here to have them when needed
-*/
-:root {
-    font-size: 20px;
-    --cerulean: #4484CE;
-    --aluminum: #D9D9D9;
-    --lightyellow: #F9CF00;
-    --tangerine: #F19F4D;
-    --prussian: #0B3C5D;
-    --sky: #328CC1;
-    --gold: #D9B310;
-    --ivory: #1D2731;
-}
-
 html {
     width: 100%;
     height: 100%;
@@ -34,105 +18,29 @@ body {
     min-width: 1000px;
 }
 
-.bold_text {
-    font-weight: bold;
-}
-
-/* CONTENT */
-main {
-    height: 80%;
-    display: flex;
-}
-
-/* APP DATA */
-section {
-    position: relative;
-    width: 80%;
-    min-width: 568px;
-    display: inline-block;
-    padding: 3rem;
-    background-color: white;
-}
-
-#best_offer {
-
-}
-
-#best_offer > article {
-    margin-bottom: 3rem;
-}
-
-#best_offer_value {
-    font-size: 10rem;
-    font-weight: bold;
-}
-
-#best_offer_bidder {
-    font-size: 3rem;
-}
-
-#best_offer_message {
-
-}
-
-.overlay {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    visibility: hidden;
-}
-
-#new_thri_form {
-    background-color: white;
-    padding: 3rem;
-    border-radius: 5px;
-    height: 400px;
-    width: 600px;
-    text-align: center;
-}
-
-#new_thri_form fieldset {
-    border-style: none;
-}
-
-#new_thri_form .message_container {
-    display: none;
-}
-
-#new_thri_form label {
-    display: block;
-    font-weight: bold;
-    font-size: 40px;
-    margin-top: 20px;
-}
-
-#new_thri_form input {
-    display: block;
-    width: 70%;
+/* noscript tag */
+noscript {
+    color: white;
+    font-size: 20px;
+    width: 50%;
     margin: auto;
-    border-radius: 5px;
-    height: 50px;
-    margin: 20px auto;
-    font-size: 40px;
+    display: block;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: red;
+}
+
+/* nocookie.php */
+#nocookie_main {
+    background-color: white;
+    padding: 10% 20%;
+    display: block;
     text-align: center;
 }
 
-#new_thri_form p {
-    height: 10%;
-    font-size: 1.5rem;
-}
-
-#new_thri_form form {
-    height: 90%;
-    position: relative;
-}
-
-#new_thri_form button {
-    margin-top: 30px;
+#nocookie_main p {
+    font-size: 30px;
+    display: block;
+    margin-bottom: 30px;
 }

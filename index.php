@@ -16,7 +16,7 @@
     <title>PoliBid</title>
     <?php require_once('./php/fragments/head_tags.php'); ?>
 </head>
-<body>
+<body onload="onload_handler()">
     <?php require_once('./php/fragments/header.php'); ?>
     <main>
         <?php require_once('./php/fragments/sidebar.php'); ?>

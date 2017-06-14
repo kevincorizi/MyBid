@@ -3,6 +3,7 @@
 <meta name="keywords" content="bid,bids,bidder,offer,product,auction,money">
 <meta name="author" content="Kevin Corizi">
 <link rel="stylesheet" href="./css/style.css"/>
+<link rel="stylesheet" href="./css/content.css"/>
 <link rel="stylesheet" href="./css/header.css"/>
 <link rel="stylesheet" href="./css/sidebar.css"/>
 <link rel="stylesheet" href="./css/controls.css"/>

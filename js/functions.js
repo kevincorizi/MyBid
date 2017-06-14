@@ -105,7 +105,7 @@ $(document).ready(function() {
             display_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
             return;
         }
-        if(new_thri.match(/(?:\d+[\.,\,])?\d+/)) {
+        if(new_thri.match(/^(\d+[\.|\,])?\d+$/)) {
             update_thri_async(auction_id, new_thri, display_result);
         } else {
             display_result("{\"status\": \"thri_error\", \"value\": \"Invalid bid value\"}");

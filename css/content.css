@@ -1,6 +1,6 @@
 /* INDEX and PROFILE CONTENT */
 main {
-    height: 80%;
+    min-height: 80%;
     display: flex;
 }
 

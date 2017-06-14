@@ -10,28 +10,6 @@
     clear: both;
 }
 
-.error_message_container{
-    background-color: rgba(255, 0, 0, 0.7);
-    border: 1px solid red;
-    padding: 20px;
-    margin-bottom: 20px;
-}
-
-.confirm_message_container{
-    background-color: #1499D3;
-    border: 1px solid #1761E8;
-    color: white;
-}
-
-.notification_message_container{
-    background-color: orange;
-    color: black;
-    margin-bottom: 20px;
-    float: left;
-    min-width: 300px;
-    text-align: left;
-}
-
 /* CONTENT OF THE MESSAGE */
 .message_header{
     display: block;
@@ -49,14 +27,14 @@
 }
 
 .message_close{
-    background: url(./assets/icons/cancel.png);
+    background: url("../assets/icons/cancel.png");
     background-repeat: no-repeat;
     height: 24px;
     width: 24px;
     border: none;
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 10px;
+    right: 10px;
 }
 
 .message_close > img{
@@ -66,4 +44,36 @@
 
 .message_close:hover{
     cursor: pointer;
+}
+
+.error_message_container{
+    background-color: rgba(255, 0, 0, 0.7);
+    border: 1px solid red;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.confirm_message_container{
+    background-color: #1499D3;
+    border: 1px solid #1761E8;
+    color: white;
+}
+
+.notification_message_container{
+    background-color: orange;
+    color: black;
+    margin-top: 20px;
+    float: left;
+    min-width: 300px;
+    text-align: left;
+    padding: 20px;
+}
+
+.notification_message_container .message_header {
+    font-size: 24px;
+}
+
+.notification_message_container .message_text {
+    margin: 0;
+    font-size: 20px;
 }

@@ -8,6 +8,9 @@ function onload_handler() {
         if(window.location.toString().indexOf("nocookie.php") != -1)
             window.location = "./index.php";
     }
+
+    // Adapt the height of the sidebar to the actual height of the content
+    $('aside').css("height", $('main').attr("height"));
 }
 
 $(document).ready(function() {

@@ -1,5 +1,6 @@
 <?php
     require_once 'config.php';
+    require_once DIR_PHP_FUNCTIONS . 'force_https.php';
     require_once DIR_PHP_FUNCTIONS . 'session_manager.php';
     require_once DIR_PHP_FUNCTIONS . 'db_manager.php';
     require_once DIR_PHP_FUNCTIONS . 'lib.php';
@@ -59,7 +60,7 @@
     </section>
 
     <div class="overlay">
-        <div id="new_thri_form" title="New bid">
+        <div class="overlay_content" id="new_thri_form" title="New bid">
             <p class="validate_tips">Please enter your new bid.</p>
             <form name="auction_<?php echo $auction->id; ?>">
                 <fieldset>

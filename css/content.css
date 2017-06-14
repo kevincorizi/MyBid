@@ -43,13 +43,16 @@ section {
     visibility: hidden;
 }
 
-#new_thri_form {
+.overlay_content {
     background-color: white;
     padding: 3rem;
     border-radius: 5px;
-    height: 400px;
     width: 600px;
     text-align: center;
+}
+
+.overlay_outcome_message {
+    font-size: 30px;
 }
 
 #new_thri_form form {

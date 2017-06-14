@@ -10,7 +10,6 @@
     function redirect($url){
         header('Location:'.$url, true, 303);
     }
-
     /*
         Converts a SQL date in one of the following formats:
         SHORT: dd/mm/aaaa hh:mm

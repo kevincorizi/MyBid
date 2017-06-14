@@ -13,7 +13,8 @@
 .error_message_container{
     background-color: rgba(255, 0, 0, 0.7);
     border: 1px solid red;
-    padding: 10px;
+    padding: 20px;
+    margin-bottom: 20px;
 }
 
 .confirm_message_container{
@@ -38,6 +39,7 @@
     text-align: center;
     text-transform: uppercase;
     margin-bottom: 5px;
+    font-weight: bold;
 }
 
 .message_text{

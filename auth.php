@@ -1,5 +1,6 @@
 <?php
     require_once 'config.php';
+    require_once DIR_PHP_FUNCTIONS.'force_https.php';
     require_once DIR_PHP_FUNCTIONS . 'session_manager.php';
     require_once DIR_PHP_FUNCTIONS . 'db_manager.php';
     require_once DIR_PHP_FUNCTIONS . 'lib.php';
@@ -79,20 +80,18 @@
     <?php require_once('./php/fragments/header.php'); ?>
     <main id="auth_main">
         <div id='login_panel'>
+            <p class='message_header'>Login</p>
             <?php if($auth_error == "username"): ?>
                 <div class="message_container error_message_container">
                     <p class="message_header">Error</p>
                     <p class="message_text">The username does not exist. Want to join us? Register here!</p>
-                    <button type="button" class="button message_close"></button>
                 </div>
             <?php elseif ($auth_error == "password"): ?>
                 <div class="message_container error_message_container">
                     <p class="message_header">Error</p>
                     <p class="message_text">Wrong password, please try again.</p>
-                    <button type="button" class="button message_close"></button>
                 </div>
             <?php endif; ?>
-            <p class='message_header'>Login</p>
             <form id='login' action='auth.php' method='POST'>
                 <input class='large_field' type='email' name='username_login' class='login_input' required placeholder='Username'>
                 <input class='large_field' type='password' name='password_login' class='login_input' required placeholder='Password'>
@@ -100,20 +99,18 @@
             </form>
         </div>
         <div id='register_panel'>
+            <p class='message_header'>Still not registered? Sign up now!</p>
             <?php if($auth_error == "register"): ?>
                 <div class="message_container error_message_container">
                     <p class="message_header">Error</p>
                     <p class="message_text">An error occurred during the registration process. Please try again.</p>
-                    <button type="button" class="button message_close"></button>
                 </div>
             <?php elseif ($auth_error == "duplicate"): ?>
                 <div class="message_container error_message_container">
                     <p class="message_header">Error</p>
                     <p class="message_text">This username is already use. Please choose another.</p>
-                    <button type="button" class="button message_close"></button>
                 </div>
             <?php endif; ?>
-            <p class='message_header'>Still not registered? Sign up now!</p>
             <form id='register' action='auth.php' method='POST' onsubmit="return validate_register();">
                 <input class='large_field' type='email' name='username_register' maxlength=45 required placeholder='Email (will be the username)'>
                 <input class='large_field' type='password' name='password_register' id='password' maxlength=45 required placeholder='Password'>

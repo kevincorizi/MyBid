@@ -29,7 +29,7 @@ $(document).ready(function() {
                     case "0":
                         //show that the username is NOT available
                         $('#register_panel .message_container').remove();
-                        $('#register_panel').prepend(
+                        $('#register').prepend(
                             "<div class='message_container error_message_container'>" +
                             "<p class='message_header'>Error</p>" +
                             "<p class='message_text'>This username is already use. Please choose another.</p>" +
@@ -38,7 +38,7 @@ $(document).ready(function() {
                     case "-1":
                         //show that the username must be an email
                         $('#register_panel .message_container').remove();
-                        $('#register_panel').prepend(
+                        $('#register').prepend(
                             "<div class='message_container error_message_container'>" +
                             "<p class='message_header'>Error</p>" +
                             "<p class='message_text'>The username must be a valid email</p>" +
@@ -68,7 +68,7 @@ $(document).ready(function() {
                     case "1":
                         //show that the username is NOT available
                         $('#login_panel .message_container').remove();
-                        $('#login_panel').prepend(
+                        $('#login').prepend(
                             "<div class='message_container error_message_container'>" +
                             "<p class='message_header'>Error</p>" +
                             "<p class='message_text'>This username does not exist? Maybe you want to register?</p>" +
@@ -77,7 +77,7 @@ $(document).ready(function() {
                     case "-1":
                         //show that the username must be an email
                         $('#login_panel .message_container').remove();
-                        $('#login_panel').prepend(
+                        $('#login').prepend(
                             "<div class='message_container error_message_container'>" +
                             "<p class='message_header'>Error</p>" +
                             "<p class='message_text'>The username must be a valid email</p>" +
@@ -94,10 +94,15 @@ $(document).ready(function() {
         $('#login_panel .message_container').remove();
     });
 
+    $('input[name=username_register]').focusin( function(){
+        $('#register_panel .message_container').remove();
+    });
+
     // Register event handler for thri update popup opening
     $('button#show_thri_popup').click(function() {
         // Show the overlay
-        $(".overlay").css("visibility", "visible");
+        //$("#new_thri_form").css("visibility", "visible");
+        $("#new_thri_form").parent().css("visibility", "visible");
     });
 
     // Register event handler for thri update popup closing
@@ -106,13 +111,13 @@ $(document).ready(function() {
         $("#new_thri_form form")[0].reset();
 
         // Hide the form
-        $(".overlay").css("visibility", "hidden");
+        $("#new_thri_form").parent().css("visibility", "hidden");
     });
 
     // Register event handler for thri update action
     $('button#update_thri_button').click(function() {
         var new_thri = Number($("#thri_value").val());
-        var auction_id = $("#new_thri_form form")[0].name.split("_")[1];
+        var auction_id = $(".overlay form")[0].name.split("_")[1];
         if(isNaN(auction_id)) {
             display_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
             return;
@@ -127,7 +132,7 @@ $(document).ready(function() {
         $("#new_thri_form form")[0].reset();
 
         // Hide the form
-        $(".overlay").css("visibility", "hidden");
+        $("#new_thri_form").parent().css("visibility", "hidden");
     });
 
     // Register event handler for notification closing and disposal from database
@@ -175,6 +180,7 @@ function display_result(result) {
     var response_ok = 0;
     var banner_title = "";
     var banner_text = "";
+    var banner_color = "";
     switch (response.status) {
         // Cases from update_thri script
         case 'thri_error':
@@ -188,7 +194,7 @@ function display_result(result) {
         case 'bid_exceeded':
             $("#current_thri_value").text(response.value);
             $("#current_thri_date").text(response.time);
-            response_ok = 1;
+            response_ok = 0;
             banner_title = "Success!";
             break;
         case 'highest_bidder':
@@ -203,7 +209,7 @@ function display_result(result) {
             banner_title = "Error";
             break;
         case 'notification_deleted':
-            response_ok = 0;
+            response_ok = 1;
             banner_title = "Success!";
             break;
         default:
@@ -213,10 +219,22 @@ function display_result(result) {
             banner_text = "We are experiencing some technical issues, please try again later!";
             break;
     }
+    if(response_ok == 0)
+        banner_color = "red";
+    else
+        banner_color = "green";
     if(banner_text == "")
         banner_text = response.value;
-
-    window.alert(banner_title + "\n" + banner_text);
+    $('main').append(
+        "<div class='overlay' id='show_outcome_popup' style='visibility: visible;' >" +
+            "<div class='overlay_content' style='background-color: " + banner_color + "'>" +
+            "<p class='overlay_outcome_message'>" + banner_text + "</p>" +
+            "</div>" +
+        "</div>"
+    );
+    setTimeout(function() {
+        $('#show_outcome_popup').remove();
+    }, 3000);
 }
 
 // Function for registration validation
@@ -231,7 +249,7 @@ function validate_register() {
             return true;
         } else {
             // At least one char and one number
-            $('#register_panel').prepend(
+            $('#register').prepend(
                 "<div class='message_container error_message_container'>" +
                 "<p class='message_header'>Error</p>" +
                 "<p class='message_text'>The password must contain at least one character and one number</p>" +
@@ -240,7 +258,7 @@ function validate_register() {
         }
     } else {
         // Password mismatch
-        $('#register_panel').prepend(
+        $('#register').prepend(
             "<div class='message_container error_message_container'>" +
             "<p class='message_header'>Error</p>" +
             "<p class='message_text'>The passwords you enter do not match</p>" +

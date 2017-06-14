@@ -1,9 +1,3 @@
-<?php
-    if(is_logged()){
-        $notifications = get_notifications("SELECT * FROM notifications WHERE user='".$_SESSION['username']."'");
-    }
-?>
-
 <aside>
     <ul id="app_actions">
         <?php if(is_logged()): ;?>

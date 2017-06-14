@@ -47,9 +47,10 @@ INSERT INTO `auction` (`id`, `name`, `bid`, `bidder`) VALUES
 --
 
 CREATE TABLE `notifications` (
+  `id` int(11) NOT NULL COMMENT 'Notification unique ID',
   `user` varchar(128) NOT NULL COMMENT 'Username',
   `auction` int(11) NOT NULL COMMENT 'Auction ID',
-  `type` tinyint(1) NOT NULL COMMENT 'Type (exceeded or highest)',
+  `type` varchar(128) NOT NULL COMMENT 'Type (exceeded or highest)',
   `message` varchar(256) NOT NULL COMMENT 'Message of the notification'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Notifications details';
 
@@ -88,7 +89,7 @@ ALTER TABLE `auction`
 -- Indici per le tabelle `notifications`
 --
 ALTER TABLE `notifications`
-  ADD PRIMARY KEY (`user`,`auction`,`type`),
+  ADD PRIMARY KEY (`id`),
   ADD KEY `notification_auction` (`auction`);
 
 --
@@ -113,6 +114,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `auction`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auction unique ID', AUTO_INCREMENT=2;
+--
+
+--
+-- AUTO_INCREMENT per la tabella `notifications`
+--
+ALTER TABLE `notifications`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Notification unique ID', AUTO_INCREMENT=2;
 --
 -- Limiti per le tabelle scaricate
 --

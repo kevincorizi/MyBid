@@ -34,9 +34,7 @@
     }
 
     /* Returns auctions from the product table */
-    function get_auctions($query){
-        global $conn;
-        $result = $conn->query($query);
+    function get_auctions($result){
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
@@ -51,9 +49,7 @@
     }
 
     /* Return notifications from the notification table */
-    function get_notifications($query){
-        global $conn;
-        $result = $conn->query($query);
+    function get_notifications($result){
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
@@ -68,9 +64,7 @@
     }
 
     /* Return offers from the offer table */
-    function get_offers($query){
-        global $conn;
-        $result = $conn->query($query);
+    function get_offers($result){
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {
@@ -85,9 +79,7 @@
     }
 
     /* Returns users from User table */
-    function get_users($query){
-        global $conn;
-        $result = $conn->query($query);
+    function get_users($result){
         if($result instanceof mysqli_result){
             $result_set = array();
             while ($row = $result->fetch_assoc()) {

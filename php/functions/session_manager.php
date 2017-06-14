@@ -17,7 +17,7 @@
         $expiration_time = 2 * 60;
         if(isset($_SESSION['username'])) {
             $now = time();
-            console_log($now." ".$_SESSION['last_interaction']);
+            // console_log($now." ".$_SESSION['last_interaction']);
             // If more than $expiration_time passed we logout and return false
             if($now - $_SESSION['last_interaction'] > $expiration_time) {
                 logout();

@@ -17,7 +17,8 @@
     if(!is_logged()) {
         redirect("../../auth.php");
     }
-    global $conn;
+
+    $conn = new DatabaseInterface();
 
     // Get the username
     $username = $_SESSION['username'];
@@ -53,7 +54,7 @@
         echo json_encode($response);
         exit();
     }
-    $target_auction = get_auctions("SELECT * FROM auction WHERE id=$auction;");
+    $target_auction = get_auctions($conn->query("SELECT * FROM auction WHERE id=$auction;"));
     if(count($target_auction) != 1) {
         // Auction ID was tampered during the execution of the script (maybe via javascript)?
 		$response = array("status" => "error", "value"=>"invalid_auction", "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
@@ -71,7 +72,7 @@
     }
 
     // Offer can be accepted, modify the THR_i for current user
-    $offers = get_offers("SELECT * FROM offer WHERE user='$username'");
+    $offers = get_offers($conn->query("SELECT * FROM offer WHERE user='$username'"));
     $update_query = '';
     if(count($offers) == 0) {
         $update_query .= "INSERT INTO offer (user, auction, value) VALUES ('$username', $auction, $thri);";
@@ -82,7 +83,7 @@
     $result = $conn->query($update_query);
 
     // After having changed the THR_i, check if the user's bid is maximum or exceeded
-    $offers = get_offers("SELECT * FROM offer WHERE auction=$auction ORDER BY value DESC, timestamp ASC");
+    $offers = get_offers($conn->query("SELECT * FROM offer WHERE auction=$auction ORDER BY value DESC, timestamp ASC"));
     if(count($offers) == 1) {
         // If the one we just registered is the only offer for the auction we set the user as the bidder
         $query = "UPDATE auction SET bidder='$username' WHERE id=$auction;";
@@ -97,9 +98,9 @@
         $result = $conn->query($query);
 
         // SEND NOTIFICATIONS TO ALL USERS EXCEPT new_bidder AND THE CURRENT USER (WHICH IS IMMEDIATELY NOTIFIED)
-        $users_to_notify = get_users("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='$username' AND u.email!='$new_bidder';");
+        $users_to_notify = get_users($conn->query("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='$username' AND u.email!='$new_bidder';"));
         foreach ($users_to_notify as $user) {
-            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 0, 'bid_exceeded');";
+            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 'bid_exceeded', '$new_bidder');";
             $result = $conn->query($query);
         }
 
@@ -107,7 +108,7 @@
 			$response = array("status" => "highest_bidder", "value"=>$offers[0]->value, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         } else {
-            $response = array("status" => "bid_exceeded", "value"=>$thri, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
+            $response = array("status" => "bid_exceeded", "value"=>$new_bidder, "time"=>toDate(date('Y-m-d H:i:s'), 'long'));
 			echo json_encode($response);
         }
     }

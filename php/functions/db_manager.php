@@ -1,7 +1,5 @@
 <?php
     /* Utility functions for database management */
-    $conn = new DatabaseInterface();
-
     class DatabaseInterface{
         private $dbConnector = null;
 
@@ -10,7 +8,12 @@
             if (mysqli_connect_errno()) {
 				die("Error when connecting to the db: ".mysqli_connect_errno()."-".mysqli_connect_error());
 			}
-			$this->dbConnector->set_charset("utf8");
+        }
+
+        function __destruct() {
+            if(!$this->dbConnector->close()) {
+                die("Something happened while closing the connection to the database: ".$this->get_error());
+            }
         }
 
         function query($query){

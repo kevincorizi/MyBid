@@ -4,22 +4,23 @@
     require_once DIR_PHP_FUNCTIONS . 'db_manager.php';
     require_once DIR_PHP_FUNCTIONS . 'lib.php';
 
-    global $conn;
-
-    $auth_error = "";
-
     /* If the user is already logged in, redirect to home page */
     start_session();
     if(is_logged()){
         redirect('index.php');
     }
+
+    $auth_error = "";
+
     /* If user wants to login */
     if (isset($_POST['submit_login'])) {
 		if($_POST['username_login'] != "" && $_POST['password_login'] != "") {
+		    // If the checks are passed
+		    $conn = new DatabaseInterface();
 			$username = $conn->secure($_POST['username_login']);
 			$password = md5($_POST['password_login']);
 			
-			$result_set = get_users("SELECT * FROM users WHERE email='".$username."'");
+			$result_set = get_users($conn->query("SELECT * FROM users WHERE email='$username';"));
 			
 			if(count($result_set) != 1){
 				$auth_error = "username";
@@ -40,19 +41,21 @@
     /* If the user wants to sign up */
     else if(isset($_POST['submit_register'])){
 		if($_POST['username_register'] != "" && $_POST['password_register'] != "") {
+		    // If the checks passed
+		    $conn = new DatabaseInterface();
 			$username = $conn->secure($_POST['username_register']);
 			$password = md5($_POST['password_register']);
 
-			$previous_user = get_users("SELECT * FROM users WHERE email='".$username."'");
+			$previous_user = get_users($conn->query("SELECT * FROM users WHERE email='$username';"));
 			if(count($previous_user) == 0){
-				$register_query = "INSERT INTO users (email, password) VALUES ('".$username."','".$password."')";
+				$register_query = "INSERT INTO users (email, password) VALUES ('$username','$password');";
 				$result = $conn->query($register_query);			
 				if($result == FALSE){
 					$auth_error = "register";
 				}
 				else{
-					$login_query = "SELECT * FROM users WHERE email='".$username."'";
-					$result_login = get_users($login_query);
+					$login_query = "SELECT * FROM users WHERE email='$username';";
+					$result_login = get_users($conn->query($login_query));
 					session_fields($result_login);
 					redirect('index.php');
 				}

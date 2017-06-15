@@ -10,13 +10,18 @@
         redirect('auth.php');
     }
 
-    $conn = new DatabaseInterface();
-    $username = $_SESSION['username'];
+    try {
+        $conn = new DatabaseInterface();
+        $username = $_SESSION['username'];
 
-    $auction = get_auctions($conn->query('SELECT * FROM auction;'))[0];
-    $offers = get_offers($conn->query("SELECT * FROM offer WHERE user='$username' AND auction=$auction->id ;"));
-    $offer = count($offers) > 0 ? $offers[0] : null;
-    $notifications = get_notifications($conn->query("SELECT * FROM notifications WHERE user='$username';"));
+        $auction = get_auctions($conn->query('SELECT * FROM auction;'))[0];
+        $offers = get_offers($conn->query("SELECT * FROM offer WHERE user='$username' AND auction=$auction->id ;"));
+        $offer = count($offers) > 0 ? $offers[0] : null;
+        $notifications = get_notifications($conn->query("SELECT * FROM notifications WHERE user='$username';"));
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">

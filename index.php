@@ -5,9 +5,14 @@
     require_once DIR_PHP_FUNCTIONS.'lib.php';
 
     start_session();
-
-    $conn = new DatabaseInterface();
-    $auction = get_auctions($conn->query('SELECT * FROM auction'))[0];
+    $auction = null;
+    try {
+        $conn = new DatabaseInterface();
+        $auction = get_auctions($conn->query('SELECT * FROM auction'))[0];
+    } catch (Exception $e) {
+        echo $e->getMessage();
+        exit();
+    }
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -23,7 +28,7 @@
             <h1 id="best_offer_title">Current best offer</h1>
             <article>
                 <h2 id="best_offer_value"><?php echo $auction->bid; ?>€</h2>
-                <?php if(!is_null($auction->bidder)): ?>
+                <?php if(!is_null($auction) && !is_null($auction->bidder)): ?>
                     <?php if(isset($_SESSION['username']) && $auction->bidder == $_SESSION['username']): ?>
                         <p id="best_offer_bidder"><span class="bold_text">You are the current winner!</span></p>
                     <?php else: ?>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>PoliBid - Login</title>
     <?php require_once('./php/fragments/head_tags.php'); ?>

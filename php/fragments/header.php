@@ -1,6 +1,6 @@
 <header>
     <div id="logo" onclick="location.href='index.php'">
-        <img src="./assets/bid_logo.png">
+        <img src="./assets/bid_logo.png" alt="PoliBid">
     </div>
     <div id="slogan" onclick="location.href='index.php'">
         <p>PoliBid</p>

@@ -69,9 +69,8 @@
 		}
     }
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>PoliBid - Login</title>
     <?php require_once('./php/fragments/head_tags.php'); ?>
@@ -93,8 +92,8 @@
                 </div>
             <?php endif; ?>
             <form id='login' action='auth.php' method='POST'>
-                <input class='large_field' type='email' name='username_login' class='login_input' required placeholder='Username'>
-                <input class='large_field' type='password' name='password_login' class='login_input' required placeholder='Password'>
+                <input class='large_field login_input' type='email' name='username_login' required placeholder='Username'>
+                <input class='large_field login_input' type='password' name='password_login' required placeholder='Password'>
                 <button type='submit' name='submit_login' class='button large_button'>Login</button>
             </form>
         </div>

@@ -1,7 +1,8 @@
 /* INDEX and PROFILE CONTENT */
 main {
-    height: auto;
     min-height: 80%;
+    height: auto !important;
+    height: 80%;
     display: flex;
 }
 

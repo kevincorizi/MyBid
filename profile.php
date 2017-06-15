@@ -18,9 +18,8 @@
     $offer = count($offers) > 0 ? $offers[0] : null;
     $notifications = get_notifications($conn->query("SELECT * FROM notifications WHERE user='$username';"));
 ?>
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>PoliBid</title>
     <?php require_once('./php/fragments/head_tags.php'); ?>
@@ -33,10 +32,10 @@
         <h1>Hello, <?php echo $username; ?>!</h1>
         <article>
             <?php if (is_null($offer)): // The user did not place a bid yet ?>
-                <p id="current_thri_value">It looks like you don't have any bid placed yet :(</p>
+                <h2 id="current_thri_value">It looks like you don't have any bid placed yet :(</h2>
                 <p>Do you want to add a new bid now?</p>
             <?php else: ?>
-                <p id="current_thri_value">Your current bid for the auction <?php echo $auction->name; ?> is <?php echo $offer->value; ?>€.</p>
+                <h2 id="current_thri_value">Your current bid for the auction <?php echo $auction->name; ?> is <?php echo $offer->value; ?>€.</h2>
                 <p>You placed this bid on <span
                             id="current_thri_date"><?php echo toDate($offer->timestamp, 'long'); ?></span>.</p>
                 <p>Do you want to update it?</p>

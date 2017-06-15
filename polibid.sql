@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Creato il: Giu 12, 2017 alle 09:34
+-- Creato il: Giu 15, 2017 alle 09:01
 -- Versione del server: 10.1.21-MariaDB
 -- Versione PHP: 7.1.1
 
@@ -19,6 +19,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `polibid`
 --
+CREATE DATABASE IF NOT EXISTS `polibid` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `polibid`;
 
 -- --------------------------------------------------------
 
@@ -26,6 +28,7 @@ SET time_zone = "+00:00";
 -- Struttura della tabella `auction`
 --
 
+DROP TABLE IF EXISTS `auction`;
 CREATE TABLE `auction` (
   `id` int(11) NOT NULL COMMENT 'Auction unique ID',
   `name` varchar(128) NOT NULL COMMENT 'Auction product name',
@@ -38,7 +41,7 @@ CREATE TABLE `auction` (
 --
 
 INSERT INTO `auction` (`id`, `name`, `bid`, `bidder`) VALUES
-(1, 'PoliProduct', '1.00', null);
+(1, 'PoliProduct', '1.00', NULL);
 
 -- --------------------------------------------------------
 
@@ -46,6 +49,7 @@ INSERT INTO `auction` (`id`, `name`, `bid`, `bidder`) VALUES
 -- Struttura della tabella `notifications`
 --
 
+DROP TABLE IF EXISTS `notifications`;
 CREATE TABLE `notifications` (
   `id` int(11) NOT NULL COMMENT 'Notification unique ID',
   `user` varchar(128) NOT NULL COMMENT 'Username',
@@ -54,10 +58,13 @@ CREATE TABLE `notifications` (
   `message` varchar(256) NOT NULL COMMENT 'Message of the notification'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Notifications details';
 
+-- --------------------------------------------------------
+
 --
 -- Struttura della tabella `offer`
 --
 
+DROP TABLE IF EXISTS `offer`;
 CREATE TABLE `offer` (
   `user` varchar(128) NOT NULL COMMENT 'Bidder name',
   `auction` int(11) NOT NULL COMMENT 'Auction ID',
@@ -65,10 +72,13 @@ CREATE TABLE `offer` (
   `timestamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT 'Moment of offer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='Offer details';
 
+-- --------------------------------------------------------
+
 --
 -- Struttura della tabella `users`
 --
 
+DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
   `email` varchar(128) NOT NULL COMMENT 'User unique name',
   `password` varchar(256) NOT NULL COMMENT 'User password'
@@ -90,7 +100,8 @@ ALTER TABLE `auction`
 --
 ALTER TABLE `notifications`
   ADD PRIMARY KEY (`id`),
-  ADD KEY `notification_auction` (`auction`);
+  ADD KEY `notification_auction` (`auction`),
+  ADD KEY `notification_user` (`user`);
 
 --
 -- Indici per le tabelle `offer`
@@ -113,14 +124,12 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT per la tabella `auction`
 --
 ALTER TABLE `auction`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auction unique ID', AUTO_INCREMENT=2;
---
-
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Auction unique ID', AUTO_INCREMENT=1;
 --
 -- AUTO_INCREMENT per la tabella `notifications`
 --
 ALTER TABLE `notifications`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Notification unique ID', AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT COMMENT 'Notification unique ID', AUTO_INCREMENT=1;
 --
 -- Limiti per le tabelle scaricate
 --

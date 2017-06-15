@@ -9,6 +9,7 @@
     /* Redirection with cache emptying */
     function redirect($url){
         header('Location:'.$url, true, 303);
+		exit();
     }
     /*
         Converts a SQL date in one of the following formats:

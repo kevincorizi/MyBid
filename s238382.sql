@@ -17,14 +17,6 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `polibid`
---
-CREATE DATABASE IF NOT EXISTS `polibid` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `polibid`;
-
--- --------------------------------------------------------
-
---
 -- Struttura della tabella `auction`
 --
 

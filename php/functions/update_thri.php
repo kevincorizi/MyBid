@@ -1,4 +1,4 @@
-<?php
+﻿<?php
     /**
      * This script performs the update of the value THR_i for the logged user.
      * There are four possible outcomes for this script:
@@ -100,7 +100,7 @@
         // SEND NOTIFICATIONS TO ALL USERS EXCEPT new_bidder AND THE CURRENT USER (WHICH IS IMMEDIATELY NOTIFIED)
         $users_to_notify = get_users($conn->query("SELECT u.* FROM users u JOIN offer o WHERE u.email=o.user AND u.email!='$username' AND u.email!='$new_bidder';"));
         foreach ($users_to_notify as $user) {
-            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 'Bid exceeded', '$new_bidder\'s bid exceeded your for auction $auction');";
+            $query = "INSERT INTO notifications (user, auction, type, message) VALUES ('$user->username', $auction, 'Bid exceeded', '$new_bidder\'s bid exceeded yours for auction ".$target_auction[0]->name."');";
             $result = $conn->query($query);
         }
 

@@ -10,7 +10,8 @@ function onload_handler() {
     }
 
     // Adapt the height of the sidebar to the actual height of the content
-    $('aside').css("height", $('main').attr("height") + " !important");
+    $('aside').outerHeight($('main').height());
+	$('section').outerHeight($('main').height());
 }
 
 $(document).ready(function() {
@@ -178,8 +179,13 @@ function delete_notification_async(notification_id, callback) {
 }
 
 function display_result(result) {
-    console.log(result);
-    var response = jQuery.parseJSON(result);
+    var response;
+	try {
+		response = jQuery.parseJSON(result);
+	} catch (e) {
+		// We always receive a proper JSON string unless the user authentication timer expires right before the request is sent
+		window.location = "./auth.php";
+	}
     var response_ok = 0;
     var banner_title = "";
     var banner_text = "";

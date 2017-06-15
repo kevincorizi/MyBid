@@ -26,12 +26,17 @@
 		
 		function start_transaction() {
 			$this->dbConnector->autocommit(false);
-			return $this->dbConnector->begin_transaction();
 		}
 		
 		function end_transaction() {
-			return $this->dbConnector->commit();
+			$this->dbConnector->commit();
+            $this->dbConnector->autocommit(true);
 		}
+
+		function rollback_transaction () {
+            $this->dbConnector->rollback();
+            $this->dbConnector->autocommit(true);
+        }
 
         function secure($input){
 			$input = strip_tags($input);

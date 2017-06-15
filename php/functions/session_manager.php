@@ -7,8 +7,8 @@
     }
 
     /* $_SESSION global variable initializer */
-    function session_fields($result_set){
-        $_SESSION['username'] = $result_set[0]->username;
+    function session_fields($user){
+        $_SESSION['username'] = $user->username;
         $_SESSION['last_interaction'] = time();
     }
 

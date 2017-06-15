@@ -11,7 +11,9 @@ if (is_logged()) {
     redirect('index.php');
 }
 
-$auth_error = "";
+$login_error = "";
+$register_error = "";
+$error = false;
 
 /* If user wants to login */
 if (isset($_POST['submit_login'])) {
@@ -26,24 +28,26 @@ if (isset($_POST['submit_login'])) {
 
             // Only reads the user table, so no need for a transaction
             $result_set = get_users($conn->query("SELECT * FROM users WHERE email='$username';"));
-            if (count($result_set) != 1) {
+            if (!$error && count($result_set) != 1) {
                 // Username does not exist
-                $auth_error = "The username does not exist. Want to join us? Register here!";
-                exit();
+                $login_error = "The username does not exist. Want to join us? Register here!";
+                $error = true;
             }
-            if ($result_set[0]->password != $password) {
+            if (!$error && $result_set[0]->password != $password) {
                 // Username exists but password is wrong
-                $auth_error = "Wrong password, please try again.";
-                exit();
+                $login_error = "Wrong password, please try again.";
+                $error = true;
             }
-            session_fields($result_set);
-            redirect('index.php');
+            if (!$error) {
+                session_fields($result_set[0]);
+                redirect('index.php');
+            }
         } catch (Exception $e) {
-            $auth_error = "A problem occurred while logging you in. Please try again later.";
-            exit();
+            $login_error = "A problem occurred while logging you in. Please try again later.";
         }
     } else {
-        $auth_error = "All fields are required for login.";
+        $login_error = "All fields are required for login.";
+        $error = true;
     }
 } /* If the user wants to sign up */
 else if (isset($_POST['submit_register'])) {
@@ -58,28 +62,27 @@ else if (isset($_POST['submit_register'])) {
             // We have to read and write according to the read, so we start a transaction
             $conn->start_transaction();
             $previous_user = get_users($conn->query("SELECT * FROM users WHERE email='$username' FOR UPDATE;"));
-            if (count($previous_user) != 0) {
-                $auth_error = "This username is already use. Please choose another.";
+            if (!$error && count($previous_user) != 0) {
+                $register_error = "This username is already use. Please choose another.";
+                $error = true;
                 $conn->rollback_transaction();
-                exit();
             }
-            // If the username is available, proceed with registration
-            $conn->query("INSERT INTO users (email, password) VALUES ('$username','$password');");
+            if (!$error) {
+                // If the username is available, proceed with registration
+                $conn->query("INSERT INTO users (email, password) VALUES ('$username','$password');");
 
-            $new_user = get_users($conn->query("SELECT * FROM users WHERE email='$username';"))[0];
-            session_fields($new_user);
-            $conn->end_transaction();
+                $new_user = get_users($conn->query("SELECT * FROM users WHERE email='$username';"))[0];
+                session_fields($new_user);
+                $conn->end_transaction();
 
-            redirect('index.php');
-            exit();
+                redirect('index.php');
+            }
         } catch (Exception $e) {
-            $auth_error = "An error occurred during the registration process. Please try again.";
+            $register_error = "An error occurred during the registration process. Please try again.";
             $conn->rollback_transaction();
-            exit();
         }
-    }
-    else {
-        $auth_error = "All fields are required for registration.";
+    } else {
+        $register_error = "All fields are required for registration.";
     }
 }
 ?>
@@ -94,10 +97,10 @@ else if (isset($_POST['submit_register'])) {
 <main id="auth_main">
     <div id='login_panel'>
         <p class='message_header'>Login</p>
-        <?php if ($auth_error != ""): ?>
+        <?php if ($login_error != ""): ?>
             <div class="message_container error_message_container">
                 <p class="message_header">Error</p>
-                <p class="message_text"><?php echo $auth_error; ?></p>
+                <p class="message_text"><?php echo $login_error; ?></p>
             </div>
         <?php endif; ?>
         <form id='login' action='auth.php' method='POST'>
@@ -109,10 +112,10 @@ else if (isset($_POST['submit_register'])) {
     </div>
     <div id='register_panel'>
         <p class='message_header'>Still not registered? Sign up now!</p>
-        <?php if ($auth_error != ""): ?>
+        <?php if ($register_error != ""): ?>
             <div class="message_container error_message_container">
                 <p class="message_header">Error</p>
-                <p class="message_text"><?php echo $auth_error; ?></p>
+                <p class="message_text"><?php echo $register_error; ?></p>
             </div>
         <?php endif; ?>
         <form id='register' action='auth.php' method='POST' onsubmit="return validate_register();">

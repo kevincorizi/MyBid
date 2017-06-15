@@ -8,8 +8,8 @@
     define('DIR_PHP_FUNCTIONS',DIR_PHP.'functions/');
     define('DIR_PHP_OBJECTS',DIR_PHP.'objects/');
 
-    define('DATABASE_NAME','s238382');
-    define('DATABASE_PASSWORD','ortsedst');
-    define('DATABASE_USERNAME','s238382');
+    define('DATABASE_NAME','polibid');
+    define('DATABASE_PASSWORD','');
+    define('DATABASE_USERNAME','root');
     define('DATABASE_HOST','localhost');
 ?>

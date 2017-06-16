@@ -13,106 +13,88 @@ if (is_logged()) {
 
 $login_error = "";
 $register_error = "";
-$error = false;
 
 /* If user wants to login */
 if (isset($_POST['submit_login'])) {
-    if ($_POST['username_login'] != "" && $_POST['password_login'] != "") {
+    try {
+        if ($_POST['username_login'] == "" || $_POST['password_login'] == "") {
+            throw new Exception("All fields are required for login.");
+        }
         $username = $_POST['username_login'];
         $password = $_POST['password_login'];
-
-        if(!filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            $login_error = "The username is not a valid email.";
-            $error = true;
+        if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("The username is not a valid email.");
         }
-
-        if(!preg_match('/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/', $password)) {
+        if (!preg_match('/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/', $password)) {
             // I know for sure that there will be no password that does not respect this format, so i save one useless DB query
-            $login_error = "The password must contain at least one number and one character";
-            $error = true;
+            throw new Exception("The password must contain at least one number and one character");
         }
 
-        if(!$error) {
-            try {
-                // If the checks are passed
-                $conn = new DatabaseInterface();
-                $username = $conn->secure($username);
-                $password = md5($password);
+        // If the checks are passed
+        $conn = new DatabaseInterface();
+        $username = $conn->secure($username);
+        $password = md5($password);
 
-                // Only reads the user table, so no need for a transaction
-                $result_set = get_users($conn->query("SELECT * FROM users WHERE email='$username';"));
-                if (count($result_set) != 1) {
-                    // Username does not exist
-                    $login_error = "The username does not exist. Want to join us? Register here!";
-                    $error = true;
-                }
-                if (!$error && $result_set[0]->password != $password) {
-                    // Username exists but password is wrong
-                    $login_error = "Wrong password, please try again.";
-                    $error = true;
-                }
-                if (!$error) {
-                    session_fields($result_set[0]);
-                    redirect('index.php');
-                }
-            } catch (Exception $e) {
-                $login_error = "A problem occurred while logging you in. Please try again later.";
-            }
+        // Only reads the user table, so no need for a transaction
+        $result_set = get_users($conn->query("SELECT * FROM users WHERE email='$username';"));
+        if (count($result_set) != 1) {
+            // Username does not exist
+            throw new Exception("The username does not exist. Want to join us? Register here!");
         }
-    } else {
-        $login_error = "All fields are required for login.";
-        $error = true;
+        if ($result_set[0]->password != $password) {
+            // Username exists but password is wrong
+            throw new Exception("Wrong password, please try again.");
+        }
+
+        session_fields($result_set[0]);
+        redirect('index.php');
+    } catch (Exception $e) {
+        $login_error = $e->getMessage();
     }
 } /* If the user wants to sign up */
 else if (isset($_POST['submit_register'])) {
-    if ($_POST['username_register'] != "" && $_POST['password_register'] != "") {
+    $transaction_started = false;
+    try {
+        if ($_POST['username_register'] == "" || $_POST['password_register'] == "") {
+            throw new Exception("All fields are required for registration.");
+        }
+
         $username = $_POST['username_register'];
         $password = $_POST['password_register'];
 
-        if(!filter_var($username, FILTER_VALIDATE_EMAIL)) {
-            $register_error = "The username is not a valid email.";
-            $error = true;
+        if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
+            throw new Exception("The username is not a valid email.");
         }
 
-        if(!preg_match('/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/', $password)) {
+        if (!preg_match('/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/', $password)) {
             // I know for sure that there will be no password that does not respect this format, so i save one useless DB query
-            $register_error = "The password must contain at least one number and one character";
-            $error = true;
+            throw new Exception("The password must contain at least one number and one character");
         }
 
-        if (!$error) {
-            try {
-                $conn = new DatabaseInterface();
-                $username = $conn->secure($username);
-                $password = md5($password);
+        $conn = new DatabaseInterface();
+        $username = $conn->secure($username);
+        $password = md5($password);
 
-                // MUST CHECK EMAIL AND PASS REGEX
+        // We have to read and write according to the read, so we start a transaction
+        $conn->start_transaction();
+        $transaction_started = true;
 
-                // We have to read and write according to the read, so we start a transaction
-                $conn->start_transaction();
-                $previous_user = get_users($conn->query("SELECT * FROM users WHERE email='$username' FOR UPDATE;"));
-                if (!$error && count($previous_user) != 0) {
-                    $register_error = "This username is already use. Please choose another.";
-                    $error = true;
-                    $conn->rollback_transaction();
-                }
-                if (!$error) {
-                    // If the username is available, proceed with registration
-                    $conn->query("INSERT INTO users (email, password) VALUES ('$username','$password');");
-
-                    $new_user = get_users($conn->query("SELECT * FROM users WHERE email='$username';"))[0];
-                    session_fields($new_user);
-                    $conn->end_transaction();
-
-                    redirect('index.php');
-                }
-            } catch (Exception $e) {
-                $register_error = "An error occurred during the registration process. Please try again.";
-                $conn->rollback_transaction();
-            }
+        $previous_user = get_users($conn->query("SELECT * FROM users WHERE email='$username' FOR UPDATE;"));
+        if (count($previous_user) != 0) {
+            throw new Exception("This username is already use. Please choose another.");
         }
-    } else {
-        $register_error = "All fields are required for registration.";
+        // If the username is available, proceed with registration
+        $conn->query("INSERT INTO users (email, password) VALUES ('$username','$password');");
+
+        $new_user = get_users($conn->query("SELECT * FROM users WHERE email='$username';"))[0];
+        session_fields($new_user);
+        $conn->end_transaction();
+
+        redirect('index.php');
+    } catch (Exception $e) {
+        $register_error = $e->getMessage();
+        if ($transaction_started)
+            $conn->rollback_transaction();
     }
 }
 ?>

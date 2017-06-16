@@ -48,6 +48,14 @@ $(document).ready(function () {
                             "<p class='message_text'>The username must be a valid email</p>" +
                             "</div>");
                         break;
+                    case "-2":  // Database exception
+                        $('#register_panel .message_container').remove();
+                        $('#register').prepend(
+                            "<div class='message_container error_message_container'>" +
+                            "<p class='message_header'>Error</p>" +
+                            "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
+                            "</div>");
+                        break;
                     default:
                         console.log(result);
                         break;
@@ -85,6 +93,14 @@ $(document).ready(function () {
                             "<div class='message_container error_message_container'>" +
                             "<p class='message_header'>Error</p>" +
                             "<p class='message_text'>The username must be a valid email</p>" +
+                            "</div>");
+                        break;
+                    case "-2":  // Database exception
+                        $('#login_panel .message_container').remove();
+                        $('#login').prepend(
+                            "<div class='message_container error_message_container'>" +
+                            "<p class='message_header'>Error</p>" +
+                            "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
                             "</div>");
                         break;
                     default:

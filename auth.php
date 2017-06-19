@@ -55,20 +55,26 @@ if (isset($_POST['submit_login'])) {
 else if (isset($_POST['submit_register'])) {
     $transaction_started = false;
     try {
-        if ($_POST['username_register'] == "" || $_POST['password_register'] == "") {
+        if ($_POST['username_register'] == "" || $_POST['password_register'] == "" || $_POST['password_register_confirm'] == "") {
             throw new Exception("All fields are required for registration.");
         }
 
         $username = $_POST['username_register'];
         $password = $_POST['password_register'];
+        $confirm = $_POST['password_register_confirm'];
 
+        // I need to check all of this, because in case javascript is disabled the browser
+        // cannot check them
         if (!filter_var($username, FILTER_VALIDATE_EMAIL)) {
             throw new Exception("The username is not a valid email.");
         }
 
+        if($password != $confirm) {
+            throw new Exception("Passwords mismatch, please try again.");
+        }
+
         if (!preg_match('/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/', $password)) {
-            // I know for sure that there will be no password that does not respect this format, so i save one useless DB query
-            throw new Exception("The password must contain at least one number and one character");
+            throw new Exception("The password must contain at least one number and one character.");
         }
 
         $conn = new DatabaseInterface();
@@ -133,9 +139,9 @@ else if (isset($_POST['submit_register'])) {
         <form id='register' action='auth.php' method='POST' onsubmit="return validate_register();">
             <input class='large_field' type='email' name='username_register' maxlength=45 required
                    placeholder='Email (will be the username)'>
-            <input class='large_field' type='password' name='password_register' id='password' maxlength=45 required
+            <input class='large_field' type='password' name='password_register' id='password_register' maxlength=45 required
                    placeholder='Password'>
-            <input class='large_field' type='password' name='repeat_password' id='password_repeat' maxlength=45 required
+            <input class='large_field' type='password' name='password_register_confirm' id='password_register_confirm' maxlength=45 required
                    placeholder='Repeat password'>
             <button type='submit' name='submit_register' class='button large_button'>Register</button>
         </form>

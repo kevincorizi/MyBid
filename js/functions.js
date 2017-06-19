@@ -283,8 +283,8 @@ function validate_login() {
 // Function for registration validation
 function validate_register() {
     $('#register_panel .message_container').remove();
-    var $pass = $('#password').val();
-    var $repeat = $('#password_repeat').val();
+    var $pass = $('#password_register').val();
+    var $repeat = $('#password_register_confirm').val();
     console.log($pass);
     console.log($repeat);
     if ($pass === $repeat) {

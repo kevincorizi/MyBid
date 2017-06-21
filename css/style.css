@@ -18,6 +18,11 @@ body {
     min-width: 1000px;
 }
 
+a {
+    color: white;
+    text-decoration: none;
+}
+
 /* noscript tag */
 noscript {
     color: white;

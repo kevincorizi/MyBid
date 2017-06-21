@@ -1,10 +1,12 @@
 <header>
-    <div id="logo" onclick="location.href='index.php'">
-        <img src="./assets/bid_logo.png" alt="PoliBid">
-    </div>
-    <div id="slogan" onclick="location.href='index.php'">
-        <p>PoliBid</p>
-    </div>
+    <a id="header_container" href="index.php">
+        <div id="logo">
+            <img src="./assets/bid_logo.png" alt="PoliBid">
+        </div>
+        <div id="slogan">
+            <p>PoliBid</p>
+        </div>
+    </a>
 </header>
 <noscript>
 	<div>

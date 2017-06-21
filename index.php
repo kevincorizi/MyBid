@@ -37,7 +37,7 @@
                 <?php endif; ?>
             </article>
             <?php if(isset($_SESSION['username']) && $auction->bidder != $_SESSION['username']): ?>
-                <p id="best_offer_message">Care to beat it? <a onclick="location.href='profile.php'"><span class="bold_text">Place an offer!</span></a></p>
+                <p id="best_offer_message">Care to beat it? <a class="bold_text" href="profile.php">Place an offer!</a></p>
             <?php endif; ?>
         </section>
     </main>

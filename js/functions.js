@@ -1,4 +1,6 @@
+/* Function called when the page is loaded */
 function onload_handler() {
+    // Check for cookies
     if (!navigator.cookieEnabled) {
         // I perform the check unless i'm already on nocookie page (to avoid loops)
         if (window.location.toString().indexOf("nocookie.php") == -1)
@@ -10,110 +12,50 @@ function onload_handler() {
     }
 
     // Adapt the height of the sidebar to the actual height of the content
+    // This is due to a compatibility issue in IE11, which treats min-height in a different way
     $('aside').outerHeight($('main').height());
     $('section').outerHeight($('main').height());
 }
 
+/* When the document is ready register these functions */
 $(document).ready(function () {
-    // Check if the selected username is already registered
+
+    // Remove all errors from login when register is focused, to clean the view
+    $('#register_panel').focusin(function () {
+        $('#login_panel .message_container').remove();
+    });
+
+    // Remove all errors from register when login is focused, to clean the view
+    $('#login_panel').focusin(function () {
+        $('#register_panel .message_container').remove();
+    });
+
+    // Check if the selected username is already used
     $('input[name=username_register]').focusout(function () {
         var username = $('input[name=username_register]').val();
         if (username == "")
             return;
-        console.log(username);
-        //use ajax to run the check
-        $.post("./php/functions/check_username.php", {username: username},
-            function (result) {
-                //if the result is 1
-                switch (result) {
-                    case "1":
-                        // Remove any error message
-                        $('#register_panel .message_container').remove();
-                        break;
-                    case "0":
-                        //show that the username is NOT available
-                        $('#register_panel .message_container').remove();
-                        $('#register').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>This username is already use. Please choose another.</p>" +
-                            "</div>");
-                        break;
-                    case "-1":
-                        //show that the username must be an email
-                        $('#register_panel .message_container').remove();
-                        $('#register').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>The username must be a valid email</p>" +
-                            "</div>");
-                        break;
-                    case "-2":  // Database exception
-                        $('#register_panel .message_container').remove();
-                        $('#register').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
-                            "</div>");
-                        break;
-                    default:
-                        console.log(result);
-                        break;
-                }
-            });
+
+        // Asynchronously perform the check and call display_errors_register with the result
+        check_username(username, display_errors_register);
     });
 
-    // Check if the selected username is already registered
+    // Check if the selected username is already registered and can log in
     $('input[name=username_login]').focusout(function () {
         var username = $('input[name=username_login]').val();
         if (username == "")
             return;
 
-        //use ajax to run the check
-        $.post("./php/functions/check_username.php", {username: username},
-            function (result) {
-                switch (result) {
-                    case "0":
-                        // Remove any error message
-                        $('#login_panel .message_container').remove();
-                        break;
-                    case "1":
-                        //show that the username is NOT available
-                        $('#login_panel .message_container').remove();
-                        $('#login').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>This username does not exist? Maybe you want to register?</p>" +
-                            "</div>");
-                        break;
-                    case "-1":
-                        //show that the username must be an email
-                        $('#login_panel .message_container').remove();
-                        $('#login').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>The username must be a valid email</p>" +
-                            "</div>");
-                        break;
-                    case "-2":  // Database exception
-                        $('#login_panel .message_container').remove();
-                        $('#login').prepend(
-                            "<div class='message_container error_message_container'>" +
-                            "<p class='message_header'>Error</p>" +
-                            "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
-                            "</div>");
-                        break;
-                    default:
-                        console.log(result);
-                        break;
-                }
-            });
+        // Asynchronously perform the check and call display_errors_login with the result
+        check_username(username, display_errors_login);
     });
 
+    // Remove any error message from the input when i focus in
     $('input[name=username_login]').focusin(function () {
         $('#login_panel .message_container').remove();
     });
 
+    // Remove any error message from the input when i focus in
     $('input[name=username_register]').focusin(function () {
         $('#register_panel .message_container').remove();
     });
@@ -121,7 +63,6 @@ $(document).ready(function () {
     // Register event handler for thri update popup opening
     $('button#show_thri_popup').click(function () {
         // Show the overlay
-        //$("#new_thri_form").css("visibility", "visible");
         $("#new_thri_form").parent().css("visibility", "visible");
     });
 
@@ -139,13 +80,13 @@ $(document).ready(function () {
         var new_thri = Number($("#thri_value").val());
         var auction_id = $(".overlay form")[0].name.split("_")[1];
         if (isNaN(auction_id)) {
-            display_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
+            display_thri_update_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
             return;
         }
         if (!isNaN(new_thri)) {
-            update_thri_async(auction_id, new_thri, display_result);
+            update_thri_async(auction_id, new_thri, display_thri_update_result);
         } else {
-            display_result("{\"status\": \"thri_error\", \"value\": \"Invalid bid value\"}");
+            display_thri_update_result("{\"status\": \"thri_error\", \"value\": \"Invalid bid value\"}");
         }
 
         // Reset the input fields of the form
@@ -160,15 +101,111 @@ $(document).ready(function () {
         var notification_id = $(this).parent().attr('id').split("_")[1];
         console.log(notification_id);
         if (isNaN(notification_id)) {
-            display_result("{\"status\": \"notification_error\", \"value\": \"Invalid notification ID\"}");
+            display_thri_update_result("{\"status\": \"notification_error\", \"value\": \"Invalid notification ID\"}");
             return;
         }
-        delete_notification_async(notification_id, display_result);
+        delete_notification_async(notification_id, display_thri_update_result);
         $(this).parent().hide();
         $count = parseInt($('#notification_count').text());
         $('#notification_count').text($count - 1);
     });
 });
+
+// Dedicated function to display errors in the login part after the async call
+function display_errors_login(code) {
+    var success = false;
+    switch (code) {
+        case "1":
+            // Username exists
+            $('#login_panel .message_container').remove();
+            success = true;
+            break;
+        case "0":
+            // Username does not exist
+            $('#login_panel .message_container').remove();
+            $('#login').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>This username does not exist? Maybe you want to register?</p>" +
+                "</div>");
+            break;
+        case "-1":
+            // Invalid email
+            $('#login_panel .message_container').remove();
+            $('#login').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>The username must be a valid email</p>" +
+                "</div>");
+            break;
+        case "-2":
+            // Database exception
+            $('#login_panel .message_container').remove();
+            $('#login').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
+                "</div>");
+            break;
+        default:
+            console.log(result);
+            break;
+    }
+    return success;
+}
+
+// Dedicated function to display errors in the register part after the async call
+function display_errors_register(code) {
+    var success = false;
+    switch (code) {
+        case "0":
+            // Username available
+            $('#register_panel .message_container').remove();
+            success = true;
+            break;
+        case "1":
+            // Username not available
+            $('#register_panel .message_container').remove();
+            $('#register').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>This username is already use. Please choose another.</p>" +
+                "</div>");
+            break;
+        case "-1":
+            // Invalid email
+            $('#register_panel .message_container').remove();
+            $('#register').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>The username must be a valid email</p>" +
+                "</div>");
+            break;
+        case "-2":
+            // Database exception
+            $('#register_panel .message_container').remove();
+            $('#register').prepend(
+                "<div class='message_container error_message_container'>" +
+                "<p class='message_header'>Error</p>" +
+                "<p class='message_text'>There was a problem with your request. Please try again later</p>" +
+                "</div>");
+            break;
+        default:
+            console.log(result);
+            break;
+    }
+    return success;
+}
+
+// Check how many users exist with the username passed as parameter
+// Invoke callback on the result
+function check_username(username, callback) {
+    $.post("./php/functions/check_username.php",
+        {username: username},
+        function (result) {
+            callback(result);
+        });
+}
 
 // Function to asynchronously perform thri update
 function update_thri_async(auction_id, new_thri, callback) {
@@ -194,7 +231,8 @@ function delete_notification_async(notification_id, callback) {
     }
 }
 
-function display_result(result) {
+// Display messages according to the result of the async thri update
+function display_thri_update_result(result) {
     var response;
     try {
         response = jQuery.parseJSON(result);
@@ -265,8 +303,9 @@ function display_result(result) {
 // Function for login validation before sending to server
 function validate_login() {
     $('#login_panel .message_container').remove();
+    var $username = $('input[name=username_login]').val();
     var $pass = $('#password_login').val();
-    console.log($pass);
+
     if ($pass.match(/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/)) {
         return true;
     } else {
@@ -283,10 +322,10 @@ function validate_login() {
 // Function for registration validation
 function validate_register() {
     $('#register_panel .message_container').remove();
+    var $username = $('input[name=username_register]').val();
     var $pass = $('#password_register').val();
     var $repeat = $('#password_register_confirm').val();
-    console.log($pass);
-    console.log($repeat);
+
     if ($pass === $repeat) {
         if ($pass.match(/^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/)) {
             return true;

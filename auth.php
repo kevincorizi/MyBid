@@ -69,7 +69,7 @@ else if (isset($_POST['submit_register'])) {
             throw new Exception("The username is not a valid email.");
         }
 
-        if($password != $confirm) {
+        if ($password != $confirm) {
             throw new Exception("Passwords mismatch, please try again.");
         }
 
@@ -139,9 +139,11 @@ else if (isset($_POST['submit_register'])) {
         <form id='register' action='auth.php' method='POST' onsubmit="return validate_register();">
             <input class='large_field' type='email' name='username_register' maxlength=45 required
                    placeholder='Email (will be the username)'>
-            <input class='large_field' type='password' name='password_register' id='password_register' maxlength=45 required
+            <input class='large_field' type='password' name='password_register' id='password_register' maxlength=45
+                   required
                    placeholder='Password'>
-            <input class='large_field' type='password' name='password_register_confirm' id='password_register_confirm' maxlength=45 required
+            <input class='large_field' type='password' name='password_register_confirm' id='password_register_confirm'
+                   maxlength=45 required
                    placeholder='Repeat password'>
             <button type='submit' name='submit_register' class='button large_button'>Register</button>
         </form>

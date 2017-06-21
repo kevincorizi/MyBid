@@ -92,7 +92,7 @@ try {
     if ($transaction_started) {
         $conn->rollback_transaction();
     }
-    if(!json_decode($e->getMessage())) {
+    if (!json_decode($e->getMessage())) {
         // An exception thrown by the database or by an uncontrolled environment
         echo json_encode(array("status" => "thri_error", "value" => "Server error in bid update", "time" => toDate(date('Y-m-d H:i:s'), 'long')));
     } else {

@@ -77,13 +77,13 @@ $(document).ready(function () {
 
     // Register event handler for thri update action
     $('button#update_thri_button').click(function () {
-        var new_thri = Number($("#thri_value").val());
+        var new_thri = $("#thri_value").val();
         var auction_id = $(".overlay form")[0].name.split("_")[1];
         if (isNaN(auction_id)) {
             display_thri_update_result("{\"status\": \"thri_error\", \"value\": \"Invalid auction ID\"}");
             return;
         }
-        if (!isNaN(new_thri)) {
+        if (/*new_thri.match(/^(\d{1,5}[\.,\,]\d{2})$/)*/true) {
             update_thri_async(auction_id, new_thri, display_thri_update_result);
         } else {
             display_thri_update_result("{\"status\": \"thri_error\", \"value\": \"Invalid bid value\"}");
@@ -235,6 +235,7 @@ function delete_notification_async(notification_id, callback) {
 function display_thri_update_result(result) {
     var response;
     try {
+        console.log("Result :" + result);
         response = jQuery.parseJSON(result);
     } catch (e) {
         // We always receive a proper JSON string unless the user authentication timer expires right before the request is sent

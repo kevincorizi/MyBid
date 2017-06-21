@@ -73,8 +73,7 @@ try {
                 <fieldset>
                     <label for="thri_value">Value</label>
                     <input type="number" name="thri_value" id="thri_value" value="<?php echo $auction->bid + 0.01 ?>"
-                           step="0.01"
-                           onchange="if( this.value.length == 1 ) this.value=this.value + '.00'; if(this.value.split('.')[1].length == 1) this.value = this.value + '0';">
+                           step="0.01">
                     <button id="update_thri_button" type="button" class="button large_button">Confirm</button>
                     <button id="cancel_thri_button" type="button" class="button large_button">Close</button>
                 </fieldset>

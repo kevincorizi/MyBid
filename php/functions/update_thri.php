@@ -36,11 +36,12 @@ try {
     if ($auction == false) {
         throw new Exception(json_encode(array("status" => "thri_error", "value" => "Invalid parameters in bid update", "time" => toDate(date('Y-m-d H:i:s'), 'long'))));
     }
-    // thri must be a decimal number
-    $thri = floatval($thri);
-    if ($thri == false) {
+    // thri must be a decimal number with 1 to 5 integer digits and exactly 2 decimal digits
+    if (!preg_match('/^([0-9]{1,5}[\.,\,]\[0-9]{2})$/', $thri)) {
         throw new Exception(json_encode(array("status" => "thri_error", "value" => "Invalid parameters in bid update", "time" => toDate(date('Y-m-d H:i:s'), 'long'))));
     }
+
+    $thri = floatval($thri);
 
     $conn = new DatabaseInterface();
     $conn->start_transaction();
